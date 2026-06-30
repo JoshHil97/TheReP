@@ -30,24 +30,21 @@ const closeTopOverlay = () => {
   const lightbox = document.querySelector("[data-rp-lightbox]");
 
   if (lightbox && !lightbox.hidden) {
-    lightbox.hidden = true;
-    document.body.classList.remove("rp-lightbox-open");
+    lightbox.querySelector("[data-rp-lightbox-close]")?.click();
     return;
   }
 
   const cartDrawer = document.querySelector("[data-rp-cart-drawer]");
 
   if (cartDrawer && !cartDrawer.hidden) {
-    setHiddenState(cartDrawer, true);
-    document.body.classList.remove("rp-cart-open");
+    cartDrawer.querySelector("[data-rp-cart-close]")?.click();
     return;
   }
 
   const searchPanel = document.querySelector("[data-rp-search-panel]");
 
   if (searchPanel && !searchPanel.hidden) {
-    setHiddenState(searchPanel, true);
-    document.body.classList.remove("rp-search-open");
+    searchPanel.querySelector("[data-rp-search-close]")?.click();
     return;
   }
 
@@ -61,6 +58,35 @@ const closeTopOverlay = () => {
   if (mobileMenu?.open) {
     mobileMenu.open = false;
   }
+};
+
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+let activeTrapCleanup = null;
+
+const trapFocus = (container) => {
+  if (activeTrapCleanup) activeTrapCleanup();
+
+  const handleKeydown = (event) => {
+    if (event.key !== "Tab") return;
+    const focusables = Array.from(container.querySelectorAll(FOCUSABLE)).filter((el) => !el.closest("[hidden]"));
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (event.shiftKey) {
+      if (document.activeElement === first) { event.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+  };
+
+  container.addEventListener("keydown", handleKeydown);
+  activeTrapCleanup = () => container.removeEventListener("keydown", handleKeydown);
+};
+
+const releaseFocus = (returnTarget) => {
+  if (activeTrapCleanup) { activeTrapCleanup(); activeTrapCleanup = null; }
+  returnTarget?.focus();
 };
 
 const debounce = (callback, wait = 180) => {
@@ -658,8 +684,10 @@ const initPredictiveSearch = () => {
   if (!panel || !input || !results || openers.length === 0) return;
 
   let firstResultUrl = "";
+  let searchOpener = null;
 
-  const openPanel = () => {
+  const openPanel = (opener) => {
+    searchOpener = opener || null;
     const cartDrawer = document.querySelector("[data-rp-cart-drawer]");
 
     if (cartDrawer) {
@@ -669,12 +697,14 @@ const initPredictiveSearch = () => {
     document.body.classList.remove("rp-cart-open");
     setHiddenState(panel, false);
     document.body.classList.add("rp-search-open");
-    window.requestAnimationFrame(() => input.focus());
+    window.requestAnimationFrame(() => { input.focus(); trapFocus(panel); });
   };
 
   const closePanel = () => {
     setHiddenState(panel, true);
     document.body.classList.remove("rp-search-open");
+    releaseFocus(searchOpener);
+    searchOpener = null;
   };
 
   const setSearchState = (markup, { loading = false } = {}) => {
@@ -758,7 +788,7 @@ const initPredictiveSearch = () => {
   openers.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
-      openPanel();
+      openPanel(button);
     });
   });
 
@@ -793,7 +823,10 @@ const initCartDrawer = () => {
     });
   };
 
-  const openDrawer = () => {
+  let cartOpener = null;
+
+  const openDrawer = (opener) => {
+    if (opener !== undefined) cartOpener = opener;
     const searchPanel = document.querySelector("[data-rp-search-panel]");
 
     if (searchPanel) {
@@ -803,11 +836,18 @@ const initCartDrawer = () => {
     document.body.classList.remove("rp-search-open");
     setHiddenState(drawer, false);
     document.body.classList.add("rp-cart-open");
+    window.requestAnimationFrame(() => {
+      const firstFocusable = drawer.querySelector(FOCUSABLE);
+      firstFocusable?.focus();
+      trapFocus(drawer);
+    });
   };
 
   const closeDrawer = () => {
     setHiddenState(drawer, true);
     document.body.classList.remove("rp-cart-open");
+    releaseFocus(cartOpener);
+    cartOpener = null;
   };
 
   const renderProperties = (properties = {}) => {
@@ -937,6 +977,7 @@ const initCartDrawer = () => {
   openers.forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
+      cartOpener = link;
       loadCart({ open: true });
     });
   });
@@ -1003,16 +1044,26 @@ const initProductZoom = () => {
 
   if (!lightbox || !image || triggers.length === 0) return;
 
-  const openLightbox = (sourceImage) => {
+  let lightboxOpener = null;
+
+  const openLightbox = (sourceImage, opener) => {
+    lightboxOpener = opener || null;
     image.src = sourceImage.currentSrc || sourceImage.src || "";
     image.alt = sourceImage.alt || "";
     lightbox.hidden = false;
     document.body.classList.add("rp-lightbox-open");
+    window.requestAnimationFrame(() => {
+      const closeBtn = lightbox.querySelector("[data-rp-lightbox-close]");
+      closeBtn?.focus();
+      trapFocus(lightbox);
+    });
   };
 
   const closeLightbox = () => {
     lightbox.hidden = true;
     document.body.classList.remove("rp-lightbox-open");
+    releaseFocus(lightboxOpener);
+    lightboxOpener = null;
   };
 
   triggers.forEach((trigger) => {
@@ -1020,11 +1071,11 @@ const initProductZoom = () => {
 
     if (!imageNode) return;
 
-    trigger.addEventListener("click", () => openLightbox(imageNode));
+    trigger.addEventListener("click", () => openLightbox(imageNode, trigger));
     trigger.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        openLightbox(imageNode);
+        openLightbox(imageNode, trigger);
       }
     });
   });
