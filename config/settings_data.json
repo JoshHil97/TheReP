@@ -1,7 +1,83 @@
 {
   "current": {
     "settings": {},
-    "sections": {},
+    "sections": {
+      "rp-announcement-bar": {
+        "type": "rp-announcement-bar",
+        "blocks": {
+          "msg_1": {
+            "type": "message",
+            "settings": {
+              "text": "Free tracked delivery · Prepaid return included"
+            }
+          },
+          "msg_2": {
+            "type": "message",
+            "settings": {
+              "text": "Professionally cleaned before every dispatch"
+            }
+          },
+          "msg_3": {
+            "type": "message",
+            "settings": {
+              "text": "Luxury occasionwear · Rent from £25 per day"
+            }
+          },
+          "msg_4": {
+            "type": "message",
+            "settings": {
+              "text": "Booking-window protected dates",
+              "link": "/pages/how-it-works"
+            }
+          }
+        },
+        "block_order": ["msg_1", "msg_2", "msg_3", "msg_4"],
+        "settings": {
+          "rotation_speed": 5
+        }
+      },
+      "rp-header-overlay": {
+        "type": "rp-header-overlay",
+        "settings": {
+          "logo_width": 140,
+          "transparent_on_home": true,
+          "transparent_on_product": false
+        }
+      },
+      "rp-footer": {
+        "type": "rp-footer",
+        "blocks": {
+          "col_shop": {
+            "type": "link_list",
+            "settings": {
+              "heading": "The edit"
+            }
+          },
+          "col_help": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Customer care"
+            }
+          },
+          "col_about": {
+            "type": "text",
+            "settings": {
+              "heading": "About",
+              "copy": "<p>Standout occasionwear for every invitation — sourced, cleaned, and dispatched so the only thing you have to think about is the occasion itself.</p>"
+            }
+          }
+        },
+        "block_order": ["col_shop", "col_help", "col_about"],
+        "settings": {
+          "logo_width": 160,
+          "instagram_url": "https://www.instagram.com/therepclub",
+          "about_page_url": "/pages/about",
+          "faq_page_url": "/pages/faqs",
+          "terms_page_url": "/pages/terms-conditions",
+          "returns_page_url": "/pages/delivery-returns"
+        }
+      }
+    },
     "content_for_index": []
   },
   "presets": {
