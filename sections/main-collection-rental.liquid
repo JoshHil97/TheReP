@@ -94,6 +94,18 @@
 
         <button class="rp-collection-main__filters-toggle" type="button" data-rp-filter-toggle>
           Filters
+          {%- if active_filter_count > 0 -%}
+            <span class="rp-collection-main__filters-badge" aria-label="{{ active_filter_count }} active">{{ active_filter_count }}</span>
+          {%- endif -%}
+        </button>
+
+        <button
+          class="rp-collection-main__available-toggle"
+          type="button"
+          aria-pressed="false"
+          data-rp-available-only
+        >
+          Available only
         </button>
 
         <form class="rp-collection-main__sort" method="get" data-rp-collection-sort-form>
@@ -112,7 +124,7 @@
           {%- endfor -%}
 
           <label class="visually-hidden" for="SortBy">Sort by</label>
-          <select id="SortBy" name="sort_by" onchange="this.form.submit()">
+          <select id="SortBy" name="sort_by">
             {%- for option in collection.sort_options -%}
               <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
                 {{ option.name }}
@@ -121,6 +133,30 @@
           </select>
         </form>
       </div>
+
+      {%- if active_filter_count > 0 -%}
+        <div class="rp-collection-main__active-tags">
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <a href="{{ value.url_to_remove }}" class="rp-active-tag" data-rp-filter-remove>
+                <span>{{ filter.label }}: {{ value.label }}</span>
+                <span aria-hidden="true">×</span>
+              </a>
+            {%- endfor -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value != blank or filter.max_value.value != blank -%}
+                <a href="{{ filter.url_to_remove }}" class="rp-active-tag" data-rp-filter-remove>
+                  <span>Price range</span>
+                  <span aria-hidden="true">×</span>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <a href="{{ collection.url }}" class="rp-active-tag rp-active-tag--clear" data-rp-filter-remove>
+            Clear all
+          </a>
+        </div>
+      {%- endif -%}
 
       <button class="rp-collection-main__filters-overlay" type="button" data-rp-filter-close aria-label="Close filters"></button>
 

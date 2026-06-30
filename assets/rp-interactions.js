@@ -409,16 +409,21 @@ const initCollectionSection = (root) => {
   let isLoading = false;
   let paginationObserver;
 
+  const availableOnlyBtn = root.querySelector("[data-rp-available-only]");
   const getCards = () => Array.from(root.querySelectorAll("[data-rp-product-card]"));
+  const isAvailableOnly = () => availableOnlyBtn?.getAttribute("aria-pressed") === "true";
 
   const applyClientSearch = () => {
     const searchTerm = (collectionSearchState.get(collectionKey) || "").toLowerCase();
+    const availableOnly = isAvailableOnly();
     const cards = getCards();
     let visibleCount = 0;
 
     cards.forEach((card) => {
       const haystack = card.dataset.productSearch || "";
-      const matches = searchTerm === "" || haystack.includes(searchTerm);
+      const matchesSearch = searchTerm === "" || haystack.includes(searchTerm);
+      const matchesAvailable = !availableOnly || card.dataset.productAvailable === "true";
+      const matches = matchesSearch && matchesAvailable;
 
       card.hidden = !matches;
       card.classList.toggle("is-hidden-by-search", !matches);
@@ -429,18 +434,37 @@ const initCollectionSection = (root) => {
     });
 
     if (status) {
-      if (searchTerm) {
+      if (searchTerm || availableOnly) {
         const label = visibleCount === 1 ? "dress" : "dresses";
-        status.textContent = `${visibleCount} ${label} match "${searchInput?.value.trim() || searchTerm}"`;
+        const note = availableOnly ? " (available only)" : "";
+        status.textContent = searchTerm
+          ? `${visibleCount} ${label} match "${searchInput?.value.trim() || searchTerm}"${note}`
+          : `${visibleCount} ${label} available`;
       } else {
         status.textContent = status.dataset.defaultStatus || status.textContent;
       }
     }
 
     if (searchEmpty) {
-      searchEmpty.hidden = !(searchTerm && visibleCount === 0 && cards.length > 0);
+      searchEmpty.hidden = !((searchTerm || availableOnly) && visibleCount === 0 && cards.length > 0);
     }
   };
+
+  if (availableOnlyBtn) {
+    availableOnlyBtn.addEventListener("click", () => {
+      const nowActive = availableOnlyBtn.getAttribute("aria-pressed") !== "true";
+      availableOnlyBtn.setAttribute("aria-pressed", String(nowActive));
+      availableOnlyBtn.classList.toggle("is-active", nowActive);
+      applyClientSearch();
+    });
+  }
+
+  root.addEventListener("click", (event) => {
+    const removeLink = event.target.closest("[data-rp-filter-remove]");
+    if (!removeLink) return;
+    event.preventDefault();
+    fetchCollectionMarkup(removeLink.href);
+  });
 
   const serializeCollectionForms = () => {
     const params = new URLSearchParams();
