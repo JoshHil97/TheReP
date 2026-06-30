@@ -3090,6 +3090,45 @@ textarea:focus-visible {
   color: rgba(32, 38, 29, 0.72);
 }
 
+.rp-cart__booking-window {
+  background: rgba(121, 142, 102, 0.07);
+  border-radius: 0.55rem;
+  padding: 0.7rem 0.85rem;
+  margin-bottom: 0.6rem;
+}
+
+.rp-cart__booking-window-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(33, 43, 32, 0.56);
+  margin: 0 0 0.45rem;
+}
+
+.rp-cart__item-price-context {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(33, 43, 32, 0.5);
+  margin-top: 0.15rem;
+}
+
+.rp-cart-drawer__booking {
+  background: rgba(121, 142, 102, 0.07);
+  border-radius: 0.55rem;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.rp-cart-drawer__booking-label {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(32, 38, 29, 0.55);
+  margin: 0 0 0.4rem;
+}
+
 .rp-cart__trust {
   display: flex;
   flex-direction: column;

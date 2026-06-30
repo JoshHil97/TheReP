@@ -63,6 +63,9 @@
                       {%- if item.original_line_price > item.final_line_price -%}
                         <s class="rp-cart__item-price-original">{{ item.original_line_price | money }}</s>
                       {%- endif -%}
+                      {%- if visible_property_count > 0 -%}
+                        <span class="rp-cart__item-price-context">Rental total</span>
+                      {%- endif -%}
                     </div>
                   </div>
 
@@ -75,25 +78,73 @@
                   {%- endfor -%}
 
                   {%- if visible_property_count > 0 -%}
+                    {%- assign has_booking_props = false -%}
+                    {%- for property in item.properties -%}
+                      {%- assign property_key_first = property.first | slice: 0 -%}
+                      {%- if property.last != blank and property_key_first != '_' -%}
+                        {%- assign prop_key_lower = property.first | downcase -%}
+                        {%- if prop_key_lower contains 'date' or prop_key_lower contains 'start' or prop_key_lower contains 'end' or prop_key_lower contains 'duration' or prop_key_lower contains 'days' or prop_key_lower contains 'rental' or prop_key_lower contains 'from' or prop_key_lower == 'to' or prop_key_lower contains 'period' -%}
+                          {%- assign has_booking_props = true -%}
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+
                     <div class="rp-cart__details">
-                      <p class="rp-cart__details-label">Rental details</p>
-                      <dl class="rp-cart__details-list">
-                        {%- for property in item.properties -%}
-                          {%- assign property_key_first = property.first | slice: 0 -%}
-                          {%- if property.last != blank and property_key_first != '_' -%}
-                            <div class="rp-cart__details-item">
-                              <dt>{{ property.first }}</dt>
-                              <dd>
-                                {%- if property.last contains '/uploads/' -%}
-                                  <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
-                                {%- else -%}
-                                  {{ property.last }}
+                      <p class="rp-cart__details-label">Booking details</p>
+
+                      {%- if has_booking_props -%}
+                        <div class="rp-cart__booking-window">
+                          <p class="rp-cart__booking-window-label">Booking window</p>
+                          <dl class="rp-cart__details-list">
+                            {%- for property in item.properties -%}
+                              {%- assign property_key_first = property.first | slice: 0 -%}
+                              {%- if property.last != blank and property_key_first != '_' -%}
+                                {%- assign prop_key_lower = property.first | downcase -%}
+                                {%- if prop_key_lower contains 'date' or prop_key_lower contains 'start' or prop_key_lower contains 'end' or prop_key_lower contains 'duration' or prop_key_lower contains 'days' or prop_key_lower contains 'rental' or prop_key_lower contains 'from' or prop_key_lower == 'to' or prop_key_lower contains 'period' -%}
+                                  <div class="rp-cart__details-item">
+                                    <dt>{{ property.first }}</dt>
+                                    <dd>{{ property.last }}</dd>
+                                  </div>
                                 {%- endif -%}
-                              </dd>
-                            </div>
-                          {%- endif -%}
-                        {%- endfor -%}
-                      </dl>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </dl>
+                        </div>
+                      {%- endif -%}
+
+                      {%- assign other_prop_count = 0 -%}
+                      {%- for property in item.properties -%}
+                        {%- assign property_key_first = property.first | slice: 0 -%}
+                        {%- if property.last != blank and property_key_first != '_' -%}
+                          {%- assign prop_key_lower = property.first | downcase -%}
+                          {%- unless prop_key_lower contains 'date' or prop_key_lower contains 'start' or prop_key_lower contains 'end' or prop_key_lower contains 'duration' or prop_key_lower contains 'days' or prop_key_lower contains 'rental' or prop_key_lower contains 'from' or prop_key_lower == 'to' or prop_key_lower contains 'period' -%}
+                            {%- assign other_prop_count = other_prop_count | plus: 1 -%}
+                          {%- endunless -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      {%- if other_prop_count > 0 -%}
+                        <dl class="rp-cart__details-list">
+                          {%- for property in item.properties -%}
+                            {%- assign property_key_first = property.first | slice: 0 -%}
+                            {%- if property.last != blank and property_key_first != '_' -%}
+                              {%- assign prop_key_lower = property.first | downcase -%}
+                              {%- unless prop_key_lower contains 'date' or prop_key_lower contains 'start' or prop_key_lower contains 'end' or prop_key_lower contains 'duration' or prop_key_lower contains 'days' or prop_key_lower contains 'rental' or prop_key_lower contains 'from' or prop_key_lower == 'to' or prop_key_lower contains 'period' -%}
+                                <div class="rp-cart__details-item">
+                                  <dt>{{ property.first }}</dt>
+                                  <dd>
+                                    {%- if property.last contains '/uploads/' -%}
+                                      <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+                                    {%- else -%}
+                                      {{ property.last }}
+                                    {%- endif -%}
+                                  </dd>
+                                </div>
+                              {%- endunless -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </dl>
+                      {%- endif -%}
                     </div>
                   {%- endif -%}
 

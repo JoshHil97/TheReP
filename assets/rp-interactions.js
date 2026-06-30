@@ -850,25 +850,36 @@ const initCartDrawer = () => {
     cartOpener = null;
   };
 
+  const BOOKING_KEY_PATTERNS = ["date", "start", "end", "duration", "days", "arrival", "return", "from", "to", "period", "window", "rental"];
+  const isBookingKey = (key) => BOOKING_KEY_PATTERNS.some((p) => key.toLowerCase().includes(p));
+
+  const renderPropertyRow = ([key, value]) => `
+    <div class="rp-cart-drawer__property">
+      <dt>${escapeHtml(key)}</dt>
+      <dd>${escapeHtml(value)}</dd>
+    </div>
+  `;
+
   const renderProperties = (properties = {}) => {
     const items = Object.entries(properties).filter(([key, value]) => value && !key.startsWith("_"));
 
     if (items.length === 0) return "";
 
-    return `
-      <dl class="rp-cart-drawer__properties">
-        ${items
-          .map(
-            ([key, value]) => `
-              <div class="rp-cart-drawer__property">
-                <dt>${escapeHtml(key)}</dt>
-                <dd>${escapeHtml(value)}</dd>
-              </div>
-            `
-          )
-          .join("")}
-      </dl>
-    `;
+    const bookingItems = items.filter(([key]) => isBookingKey(key));
+    const otherItems = items.filter(([key]) => !isBookingKey(key));
+
+    const bookingSection = bookingItems.length > 0
+      ? `<div class="rp-cart-drawer__booking">
+           <p class="rp-cart-drawer__booking-label">Booking window</p>
+           <dl class="rp-cart-drawer__properties">${bookingItems.map(renderPropertyRow).join("")}</dl>
+         </div>`
+      : "";
+
+    const otherSection = otherItems.length > 0
+      ? `<dl class="rp-cart-drawer__properties">${otherItems.map(renderPropertyRow).join("")}</dl>`
+      : "";
+
+    return bookingSection + otherSection;
   };
 
   const renderCart = (cart) => {
