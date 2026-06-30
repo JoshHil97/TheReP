@@ -44,20 +44,40 @@
 
       <div class="rp-rental-widget-shell__controls">
         {%- unless product.has_only_default_variant -%}
-          <label class="rp-rental-widget-shell__field" for="rp-variant-select-{{ section_id }}">
-            <span>{{ selector_label }}</span>
-            <select id="rp-variant-select-{{ section_id }}" name="id" class="rp-rental-widget-shell__select">
+          {%- capture sizing_url -%}{% render 'rp-page-urls', page_key: 'sizing' %}{%- endcapture -%}
+          {%- assign sizing_url = sizing_url | strip -%}
+          {%- assign size_guide_href = product.metafields.custom.size_guide_url | default: sizing_url -%}
+
+          <div class="rp-rental-widget-shell__field" data-rp-variant-field>
+            <div class="rp-rental-widget-shell__field-header">
+              <span class="rp-rental-widget-shell__field-label">{{ selector_label }}</span>
+              {%- if size_guide_href != blank -%}
+                <a class="rp-rental-widget-shell__size-guide" href="{{ size_guide_href }}">Size guide</a>
+              {%- endif -%}
+            </div>
+
+            <div class="rp-rental-widget-shell__pills" role="group" aria-label="{{ selector_label }}">
               {%- for variant in product.variants -%}
-                <option
-                  value="{{ variant.id }}"
-                  {% if current_variant.id == variant.id %}selected{% endif %}
-                  {% unless variant.available %}disabled{% endunless %}
+                <button
+                  type="button"
+                  class="rp-rental-widget-shell__pill{% if current_variant.id == variant.id %} is-active{% endif %}{% unless variant.available %} is-sold-out{% endunless %}"
+                  data-rp-variant-pill
+                  data-variant-id="{{ variant.id }}"
+                  data-variant-available="{{ variant.available }}"
+                  aria-pressed="{% if current_variant.id == variant.id %}true{% else %}false{% endif %}"
                 >
-                  {{ variant.title }}{% unless variant.available %} — Sold out{% endunless %}
-                </option>
+                  {{ variant.title }}
+                  {%- unless variant.available -%}<span class="visually-hidden"> — sold out</span>{%- endunless -%}
+                </button>
               {%- endfor -%}
-            </select>
-          </label>
+            </div>
+
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-rp-variant-id-input>
+          </div>
+
+          {%- if product.metafields.custom.fit_notes != blank -%}
+            <p class="rp-rental-widget-shell__fit-note">{{ product.metafields.custom.fit_notes }}</p>
+          {%- endif -%}
         {%- endunless -%}
 
         <button

@@ -1080,6 +1080,37 @@ const initRecentlyViewed = () => {
     .join("");
 };
 
+const initVariantPills = () => {
+  document.querySelectorAll("[data-rp-variant-field]").forEach((field) => {
+    const pills = Array.from(field.querySelectorAll("[data-rp-variant-pill]"));
+    const idInput = field.querySelector("[data-rp-variant-id-input]");
+    const form = field.closest("form");
+    const submitBtn = form?.querySelector(".rp-rental-widget-shell__submit");
+
+    if (!pills.length || !idInput) return;
+
+    pills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        const available = pill.dataset.variantAvailable !== "false";
+
+        pills.forEach((p) => {
+          p.classList.remove("is-active");
+          p.setAttribute("aria-pressed", "false");
+        });
+        pill.classList.add("is-active");
+        pill.setAttribute("aria-pressed", "true");
+
+        idInput.value = pill.dataset.variantId;
+
+        if (submitBtn) {
+          submitBtn.disabled = !available;
+          submitBtn.textContent = available ? "Add booking to bag" : "Sold out";
+        }
+      });
+    });
+  });
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   initHeader();
   initAnnouncementRotation();
@@ -1094,6 +1125,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartDrawer();
   initProductZoom();
   initRecentlyViewed();
+  initVariantPills();
 
   document.querySelectorAll("[data-rp-search-panel], [data-rp-cart-drawer], [data-rp-lightbox]").forEach((panel) => {
     if (panel.hidden) {

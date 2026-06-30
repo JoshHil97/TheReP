@@ -170,8 +170,12 @@
         {% render 'rp-price-per-day', product: product %}
         <p class="rp-product-main__price-note">Final rental total updates in the booking calendar once you choose your dates.</p>
         <a class="rp-product-main__reviews-link" href="#product-reviews">
-          <span class="rp-product-main__reviews-stars" aria-hidden="true">★★★★★</span>
-          <span>Rate this dress out of 5 stars</span>
+          {%- if product.metafields.custom.reviews != blank -%}
+            <span class="rp-product-main__reviews-stars" aria-hidden="true">★★★★★</span>
+            <span>See reviews</span>
+          {%- else -%}
+            <span>No reviews yet — be the first</span>
+          {%- endif -%}
         </a>
 
         {%- if intro_content != blank -%}
@@ -242,8 +246,10 @@
     <section class="rp-product-main__reviews" id="product-reviews" data-rp-reveal>
       <div class="rp-product-main__reviews-copy">
         <p class="rp-section-eyebrow">Reviews</p>
-        <h2 class="rp-section-heading">Rate this dress.</h2>
-        <div class="rp-product-main__reviews-stars-display" aria-hidden="true">★★★★★</div>
+        <h2 class="rp-section-heading">{% if product.metafields.custom.reviews != blank %}What renters said.{% else %}Rate this dress.{% endif %}</h2>
+        {%- if product.metafields.custom.reviews != blank -%}
+          <div class="rp-product-main__reviews-stars-display" aria-hidden="true">★★★★★</div>
+        {%- endif -%}
         <div class="rp-product-main__reviews-body rte">{{ reviews_content }}</div>
       </div>
 
