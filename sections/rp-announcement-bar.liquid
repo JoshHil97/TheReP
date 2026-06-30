@@ -1,6 +1,6 @@
 <section class="rp-announcement-bar" style="--rp-marquee-duration: {{ section.settings.rotation_speed | times: 6 }}s;">
   <div class="rp-shell rp-shell--wide">
-    <div class="rp-announcement-bar__track" aria-label="Store announcements">
+    <div class="rp-announcement-bar__track" aria-label="Store announcements" aria-live="off" role="region">
       <div class="rp-announcement-bar__marquee">
         {%- if section.blocks.size > 0 -%}
           {%- for repeat in (1..2) -%}

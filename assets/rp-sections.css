@@ -26,6 +26,17 @@
   opacity: 1;
 }
 
+/* Pause marquee animation on hover and for reduced-motion users */
+.rp-announcement-bar:hover .rp-announcement-bar__marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rp-announcement-bar__marquee {
+    animation-play-state: paused;
+  }
+}
+
 .rp-header {
   position: sticky;
   top: 0;
