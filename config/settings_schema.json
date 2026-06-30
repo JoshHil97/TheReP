@@ -8,5 +8,28 @@
         "label": "Favicon"
       }
     ]
+  },
+  {
+    "name": "Social sharing & SEO",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "og_image",
+        "label": "Default social sharing image",
+        "info": "Used as the og:image fallback on non-product pages (home, collection, etc). Recommended size: 1200 × 630 px."
+      },
+      {
+        "type": "text",
+        "id": "twitter_handle",
+        "label": "Twitter / X handle",
+        "info": "Enter without the @ symbol, e.g. therepclub. Used for twitter:site and twitter:creator tags."
+      },
+      {
+        "type": "text",
+        "id": "instagram_url",
+        "label": "Instagram profile URL",
+        "info": "Full URL, e.g. https://www.instagram.com/therepclub. Added to the Organisation schema sameAs field."
+      }
+    ]
   }
 ]

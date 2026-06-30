@@ -11,6 +11,9 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 96, height: 96 }}">
     {%- endif -%}
 
+    {%- comment -%}
+      ── Page title
+    {%- endcomment -%}
     <title>
       {{ page_title }}
       {%- if current_tags %} | tagged "{{ current_tags | join: ', ' }}"{% endif -%}
@@ -18,11 +21,234 @@
       {%- unless page_title contains shop.name %} | {{ shop.name }}{% endunless -%}
     </title>
 
-    {%- if page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
+    {%- comment -%}
+      ── Meta description
+      Priority: Shopify page_description → product description → shop description → hardcoded fallback
+    {%- endcomment -%}
+    {%- assign meta_description = page_description -%}
+    {%- if meta_description == blank and template.name == 'product' -%}
+      {%- assign meta_description = product.description | strip_html | strip | truncate: 155 -%}
+    {%- endif -%}
+    {%- if meta_description == blank and template.name == 'collection' -%}
+      {%- assign meta_description = collection.description | strip_html | strip | truncate: 155 -%}
+    {%- endif -%}
+    {%- if meta_description == blank -%}
+      {%- assign meta_description = shop.description -%}
+    {%- endif -%}
+    {%- if meta_description == blank -%}
+      {%- assign meta_description = 'Premium luxury dress rental for weddings, dinners and special events. Curated occasionwear, Royal Mail tracked delivery and prepaid returns.' -%}
+    {%- endif -%}
+    <meta name="description" content="{{ meta_description | escape }}">
+
+    {%- comment -%}
+      ── Open Graph
+      og:title appends shop name unless already present.
+      og:image uses the product featured image on product pages, otherwise
+      the brand OG image set in Theme Settings → Social sharing & SEO.
+    {%- endcomment -%}
+    {%- assign og_title = page_title -%}
+    {%- unless og_title contains shop.name -%}
+      {%- assign og_title = og_title | append: ' | ' | append: shop.name -%}
+    {%- endunless -%}
+
+    {%- assign og_type = 'website' -%}
+    {%- if template.name == 'product' -%}
+      {%- assign og_type = 'product' -%}
+    {%- elsif template.name == 'article' -%}
+      {%- assign og_type = 'article' -%}
+    {%- endif -%}
+
+    {%- assign og_image_url = blank -%}
+    {%- assign og_image_alt = shop.name -%}
+    {%- assign og_image_width = 1200 -%}
+    {%- assign og_image_height = 630 -%}
+
+    {%- if template.name == 'product' and product.featured_image != blank -%}
+      {%- assign og_image_url = product.featured_image | image_url: width: 1200 -%}
+      {%- assign og_image_alt = product.featured_image.alt | default: product.title -%}
+      {%- assign og_image_width = 1200 -%}
+      {%- assign og_image_height = 1500 -%}
+    {%- elsif settings.og_image != blank -%}
+      {%- assign og_image_url = settings.og_image | image_url: width: 1200 -%}
+      {%- assign og_image_alt = settings.og_image.alt | default: shop.name -%}
+    {%- endif -%}
+
+    <meta property="og:site_name" content="{{ shop.name | escape }}">
+    <meta property="og:title" content="{{ og_title | escape }}">
+    <meta property="og:description" content="{{ meta_description | escape }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:type" content="{{ og_type }}">
+    <meta property="og:locale" content="{{ request.locale.iso_code | replace: '-', '_' }}">
+    {%- if og_image_url != blank -%}
+      <meta property="og:image" content="{{ og_image_url }}">
+      <meta property="og:image:secure_url" content="{{ og_image_url }}">
+      <meta property="og:image:width" content="{{ og_image_width }}">
+      <meta property="og:image:height" content="{{ og_image_height }}">
+      <meta property="og:image:alt" content="{{ og_image_alt | escape }}">
+    {%- endif -%}
+    {%- if template.name == 'product' -%}
+      <meta property="product:price:amount" content="{{ product.price | divided_by: 100.0 }}">
+      <meta property="product:price:currency" content="{{ cart.currency.iso_code }}">
+    {%- endif -%}
+
+    {%- comment -%}── Twitter / X card{%- endcomment -%}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ og_title | escape }}">
+    <meta name="twitter:description" content="{{ meta_description | escape }}">
+    {%- if og_image_url != blank -%}
+      <meta name="twitter:image" content="{{ og_image_url }}">
+      <meta name="twitter:image:alt" content="{{ og_image_alt | escape }}">
+    {%- endif -%}
+    {%- if settings.twitter_handle != blank -%}
+      <meta name="twitter:site" content="@{{ settings.twitter_handle | remove: '@' }}">
+      <meta name="twitter:creator" content="@{{ settings.twitter_handle | remove: '@' }}">
+    {%- endif -%}
+
+    {%- comment -%}
+      ── JSON-LD: Organization
+      Emitted on every page so Google always knows who owns this store.
+    {%- endcomment -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ClothingStore",
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }},
+      "description": {{ shop.description | default: 'Premium luxury dress rental for weddings, dinners and special events.' | json }},
+      "currenciesAccepted": "GBP",
+      "priceRange": "££"
+      {%- if settings.og_image != blank -%}
+      ,"logo": {{ settings.og_image | image_url: width: 512 | json }}
+      {%- endif -%}
+      {%- if settings.instagram_url != blank -%}
+      ,"sameAs": [{{ settings.instagram_url | json }}]
+      {%- endif -%}
+    }
+    </script>
+
+    {%- comment -%}
+      ── JSON-LD: Product
+      Uses schema.org Product with a GoodRelations LeaseOut offer to signal
+      this is a rental item, not a purchase. itemCondition is UsedCondition
+      because rental pieces are cleaned between uses — standard for rental.
+    {%- endcomment -%}
+    {%- if template.name == 'product' -%}
+      {%- assign ld_product_availability = 'https://schema.org/InStock' -%}
+      {%- unless product.available -%}
+        {%- assign ld_product_availability = 'https://schema.org/SoldOut' -%}
+      {%- endunless -%}
+      {%- assign ld_product_description = product.description | strip_html | strip | truncate: 500 -%}
+      {%- if ld_product_description == blank -%}
+        {%- assign ld_product_description = meta_description -%}
+      {%- endif -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "description": {{ ld_product_description | json }},
+      "url": {{ shop.url | append: product.url | json }},
+      "sku": {{ product.selected_or_first_available_variant.sku | default: product.id | json }},
+      "brand": {
+        "@type": "Brand",
+        "name": {{ shop.name | json }}
+      },
+      "image": [
+        {%- assign ld_image_count = 0 -%}
+        {%- for image in product.images limit: 5 -%}
+          {%- if ld_image_count > 0 -%},{%- endif -%}
+          {{ image | image_url: width: 1200 | json }}
+          {%- assign ld_image_count = ld_image_count | plus: 1 -%}
+        {%- endfor -%}
+      ],
+      "offers": {
+        "@type": "Offer",
+        "url": {{ shop.url | append: product.url | json }},
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": {{ product.price | divided_by: 100.0 }},
+        "availability": {{ ld_product_availability | json }},
+        "itemCondition": "https://schema.org/UsedCondition",
+        "businessFunction": "https://purl.org/goodrelations/v1#LeaseOut",
+        "seller": {
+          "@type": "Organization",
+          "name": {{ shop.name | json }}
+        }
+      }
+    }
+    </script>
+    {%- endif -%}
+
+    {%- comment -%}
+      ── JSON-LD: BreadcrumbList
+      Helps Google display sitelinks breadcrumbs in search results.
+    {%- endcomment -%}
+    {%- if template.name == 'product' -%}
+      {%- assign ld_breadcrumb_collection = product.collections.first -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": {{ shop.url | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {% if ld_breadcrumb_collection != blank %}{{ ld_breadcrumb_collection.title | json }}{% else %}"The Collection"{% endif %},
+          "item": {% if ld_breadcrumb_collection != blank %}{{ shop.url | append: ld_breadcrumb_collection.url | json }}{% else %}{{ shop.url | append: '/collections/all' | json }}{% endif %}
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ product.title | json }},
+          "item": {{ shop.url | append: product.url | json }}
+        }
+      ]
+    }
+    </script>
+    {%- elsif template.name == 'collection' -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": {{ shop.url | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {% if collection.title != blank and collection.title != 'Products' and collection.title != 'All' %}{{ collection.title | json }}{% else %}"The Collection"{% endif %},
+          "item": {{ shop.url | append: collection.url | json }}
+        }
+      ]
+    }
+    </script>
     {%- endif -%}
 
     {{ content_for_header }}
+
+    {%- comment -%}
+      ── Performance: preconnect to Shopify CDN so asset requests start earlier.
+    {%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- comment -%}
+      ── Fonts
+      Canela (display) and Suisse Intl (body) are premium licensed typefaces.
+      If font files are available, add @font-face declarations in rp-base.css
+      and upload the .woff2 files to the theme assets folder.
+      Until then the fallback stack performs well on all platforms:
+        Display  → Iowan Old Style (iOS/macOS) → Palatino Linotype (Windows) → serif
+        Body     → Avenir Next (iOS/macOS) → Helvetica Neue → sans-serif
+    {%- endcomment -%}
 
     {{ 'rp-base.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'rp-sections.css' | asset_url | stylesheet_tag }}
