@@ -23,7 +23,7 @@
     </div>
 
     {%- if cart.item_count > 0 -%}
-      {% form 'cart', cart, class: 'rp-cart__form' %}
+      {% form 'cart', cart, class: 'rp-cart__form', data-rp-cart-page: '' %}
         <div class="rp-cart__grid">
           <div class="rp-cart__items">
             {%- for item in cart.items -%}
@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="rp-cart__item-price">
-                      <span class="rp-cart__item-price-current">{{ item.final_line_price | money }}</span>
+                      <span class="rp-cart__item-price-current" data-rp-line-price="{{ item.key }}">{{ item.final_line_price | money }}</span>
                       {%- if item.original_line_price > item.final_line_price -%}
                         <s class="rp-cart__item-price-original">{{ item.original_line_price | money }}</s>
                       {%- endif -%}
@@ -117,12 +117,20 @@
                         min="0"
                         inputmode="numeric"
                         aria-label="Units for {{ item.product.title }}"
+                        data-rp-cart-qty
+                        data-line-key="{{ item.key }}"
                       >
                     </label>
 
-                    <a class="rp-cart__remove" href="{{ item.url_to_remove }}">
+                    <button
+                      type="button"
+                      class="rp-cart__remove"
+                      data-rp-cart-remove
+                      data-line-key="{{ item.key }}"
+                      aria-label="Remove {{ item.product.title | escape }}"
+                    >
                       Remove
-                    </a>
+                    </button>
                   </div>
                 </div>
               </article>
@@ -143,7 +151,7 @@
 
               <div class="rp-cart__summary-row">
                 <span>Items subtotal</span>
-                <span>{{ cart.items_subtotal_price | money }}</span>
+                <span data-rp-cart-subtotal>{{ cart.items_subtotal_price | money }}</span>
               </div>
 
               {%- if cart.cart_level_discount_applications.size > 0 -%}
@@ -157,7 +165,7 @@
 
               <div class="rp-cart__summary-row rp-cart__summary-row--total">
                 <span>Estimated total</span>
-                <span>{{ cart.total_price | money }}</span>
+                <span data-rp-cart-total>{{ cart.total_price | money }}</span>
               </div>
 
               <label class="rp-cart__note" for="CartNote">
@@ -166,6 +174,12 @@
               </label>
 
               <p class="rp-cart__summary-copy">Taxes and final shipping costs are confirmed at checkout. Rental dates and protected turnaround remain controlled by your booking flow.</p>
+
+              <ul class="rp-cart__trust" role="list" aria-label="Purchase confidence">
+                <li>Quality checked &amp; cleaned</li>
+                <li>Royal Mail tracked delivery</li>
+                <li>Prepaid return label included</li>
+              </ul>
 
               <div class="rp-cart__summary-actions">
                 <button class="rp-button rp-button--ghost" type="submit" name="update">

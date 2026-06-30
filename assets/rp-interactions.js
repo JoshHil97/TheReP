@@ -1104,6 +1104,78 @@ const initRecentlyViewed = () => {
     .join("");
 };
 
+const initCartPage = () => {
+  const form = document.querySelector("[data-rp-cart-page]");
+
+  if (!form) return;
+
+  const subtotalEl = form.querySelector("[data-rp-cart-subtotal]");
+  const totalEl = form.querySelector("[data-rp-cart-total]");
+  let busy = false;
+
+  const setPageLoading = (loading) => {
+    form.classList.toggle("is-loading", loading);
+    busy = loading;
+  };
+
+  const updateTotals = (cart) => {
+    if (subtotalEl) subtotalEl.textContent = formatMoney(cart.items_subtotal_price, cart.currency);
+    if (totalEl) totalEl.textContent = formatMoney(cart.total_price, cart.currency);
+
+    cart.items.forEach((item) => {
+      const priceEl = form.querySelector(`[data-rp-line-price="${item.key}"]`);
+      if (priceEl) priceEl.textContent = formatMoney(item.final_line_price, cart.currency);
+      const qtyEl = form.querySelector(`[data-rp-cart-qty][data-line-key="${item.key}"]`);
+      if (qtyEl) qtyEl.value = String(item.quantity);
+    });
+  };
+
+  const changeCartLine = async (key, quantity) => {
+    if (busy) return;
+    setPageLoading(true);
+
+    try {
+      const response = await fetch(`${shopifyRoot}cart/change.js`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ id: key, quantity }),
+      });
+
+      if (!response.ok) throw new Error(`Cart change failed: ${response.status}`);
+
+      const cart = await response.json();
+      updateTotals(cart);
+
+      if (quantity === 0) {
+        const row = form.querySelector(`[data-rp-cart-qty][data-line-key="${key}"]`)?.closest("[data-rp-reveal]");
+        if (row) {
+          row.style.transition = "opacity 240ms ease, transform 240ms ease";
+          row.style.opacity = "0";
+          row.style.transform = "translateY(-8px)";
+          window.setTimeout(() => row.remove(), 250);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setPageLoading(false);
+    }
+  };
+
+  form.addEventListener("change", debounce((event) => {
+    const input = event.target.closest("[data-rp-cart-qty]");
+    if (!input) return;
+    const qty = Math.max(0, Number.parseInt(input.value, 10) || 0);
+    changeCartLine(input.dataset.lineKey, qty);
+  }, 400));
+
+  form.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-rp-cart-remove]");
+    if (!btn) return;
+    changeCartLine(btn.dataset.lineKey, 0);
+  });
+};
+
 const initVariantPills = () => {
   document.querySelectorAll("[data-rp-variant-field]").forEach((field) => {
     const pills = Array.from(field.querySelectorAll("[data-rp-variant-pill]"));
@@ -1150,6 +1222,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initProductZoom();
   initRecentlyViewed();
   initVariantPills();
+  initCartPage();
 
   document.querySelectorAll("[data-rp-search-panel], [data-rp-cart-drawer], [data-rp-lightbox]").forEach((panel) => {
     if (panel.hidden) {

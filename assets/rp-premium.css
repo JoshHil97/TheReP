@@ -3087,6 +3087,33 @@ textarea:focus-visible {
   align-self: center;
   text-decoration: underline;
   text-underline-offset: 0.22rem;
+  color: rgba(32, 38, 29, 0.72);
+}
+
+.rp-cart__trust {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.95rem 1.1rem;
+  border-radius: 1.1rem;
+  background: rgba(236, 241, 228, 0.62);
+  border: 1px solid rgba(121, 142, 102, 0.14);
+  list-style: none;
+  font-size: 0.82rem;
+  color: rgba(32, 38, 29, 0.68);
+  letter-spacing: 0.02em;
+}
+
+.rp-cart__trust li::before {
+  content: "✓ ";
+  color: rgba(64, 96, 48, 0.72);
+}
+
+.rp-cart__form.is-loading {
+  opacity: 0.72;
+  pointer-events: none;
+  transition: opacity 180ms ease;
 }
 
 .rp-cart__footer-actions {
