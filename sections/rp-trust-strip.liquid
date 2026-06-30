@@ -1,0 +1,99 @@
+<section class="rp-trust-strip rp-tone--{{ section.settings.tone }}">
+  <div class="rp-shell">
+    <div class="rp-trust-strip__grid">
+      {%- for block in section.blocks -%}
+        <div class="rp-trust-strip__item" data-rp-reveal {{ block.shopify_attributes }}>
+          {% render 'rp-trust-item', icon: block.settings.icon, title: block.settings.title, copy: block.settings.copy %}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RP Trust strip",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Tone",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        }
+      ],
+      "default": "sand"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendar"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            }
+          ],
+          "default": "sparkle"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Professionally cleaned"
+        },
+        {
+          "type": "textarea",
+          "id": "copy",
+          "label": "Copy",
+          "default": "Every piece is prepared to luxury care standards before dispatch."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP Trust strip",
+      "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

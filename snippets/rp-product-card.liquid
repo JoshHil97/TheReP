@@ -1,0 +1,121 @@
+{%- liquid
+  assign card_product = product
+  assign primary_media = card_product.featured_media | default: card_product.media.first
+  assign secondary_media = blank
+  assign card_note = note
+  assign primary_is_ghost = false
+  assign searchable_text = card_product.title | downcase
+  assign price_value = card_product.price | money_without_currency | replace: ',', ''
+
+  for media in card_product.media
+    assign media_alt = media.alt | default: '' | downcase
+
+    if media_alt contains 'ghost' or media_alt contains 'mannequin'
+      assign primary_media = media
+      assign primary_is_ghost = true
+      break
+    endif
+  endfor
+
+  for media in card_product.media
+    if primary_media != blank and media.id == primary_media.id
+      continue
+    endif
+
+    assign media_alt = media.alt | default: '' | downcase
+    assign media_is_ghost = false
+
+    if media_alt contains 'ghost' or media_alt contains 'mannequin'
+      assign media_is_ghost = true
+    endif
+
+    if primary_is_ghost
+      unless media_is_ghost
+        assign secondary_media = media
+        break
+      endunless
+    elsif secondary_media == blank
+      assign secondary_media = media
+      break
+    endif
+  endfor
+
+  if secondary_media == blank and card_product.media.size > 1
+    for media in card_product.media
+      if primary_media != blank and media.id != primary_media.id
+        assign secondary_media = media
+        break
+      endif
+    endfor
+  endif
+
+  if card_note == blank
+    assign card_note = card_product.metafields.custom.card_note.value | default: card_product.metafields.custom.card_note
+  endif
+
+  if card_note != blank
+    assign searchable_text = searchable_text | append: ' ' | append: card_note | downcase
+  endif
+
+  if card_product.type != blank
+    assign searchable_text = searchable_text | append: ' ' | append: card_product.type | downcase
+  endif
+
+  if card_product.vendor != blank
+    assign searchable_text = searchable_text | append: ' ' | append: card_product.vendor | downcase
+  endif
+
+  if card_product.tags.size > 0
+    assign searchable_text = searchable_text | append: ' ' | append: card_product.tags | join: ' ' | downcase
+  endif
+-%}
+
+<article
+  class="rp-product-card{% if secondary_media != blank %} has-hover-media{% endif %}{% if primary_is_ghost %} has-ghost-primary{% endif %}"
+  data-rp-reveal
+  data-rp-product-card
+  data-product-search="{{ searchable_text | escape }}"
+  data-product-price="{{ price_value }}"
+  data-product-available="{% if card_product.available %}true{% else %}false{% endif %}"
+>
+  <a class="rp-product-card__link" href="{{ card_product.url }}">
+    <div class="rp-product-card__media">
+      {%- if primary_media != blank -%}
+        {{
+          primary_media
+          | image_url: width: 1200
+          | image_tag:
+            class: 'rp-product-card__image rp-product-card__image--primary',
+            loading: 'lazy',
+            widths: '420, 620, 820, 1200',
+            alt: primary_media.alt | default: card_product.title
+        }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'rp-product-card__placeholder' }}
+      {%- endif -%}
+
+      {%- if secondary_media != blank -%}
+        {{
+          secondary_media
+          | image_url: width: 1200
+          | image_tag:
+            class: 'rp-product-card__image rp-product-card__image--secondary',
+            loading: 'lazy',
+            widths: '420, 620, 820, 1200',
+            alt: secondary_media.alt | default: card_product.title
+        }}
+      {%- endif -%}
+    </div>
+
+    <div class="rp-product-card__content">
+      <div class="rp-product-card__header">
+        <h3 class="rp-product-card__title">{{ card_product.title }}</h3>
+        {% render 'rp-price-per-day', product: card_product %}
+      </div>
+
+      {%- if card_note != blank -%}
+        <p class="rp-product-card__note">{{ card_note }}</p>
+      {%- endif -%}
+    </div>
+  </a>
+</article>

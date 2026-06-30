@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "rp-page-delivery",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

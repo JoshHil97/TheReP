@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "eyebrow": "The Re:P Club",
+        "lead": "<p>Everything you need to rent with confidence, kept clear and easy to navigate.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

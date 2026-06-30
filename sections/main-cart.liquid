@@ -1,0 +1,211 @@
+<section class="rp-cart">
+  <div class="rp-shell rp-shell--wide">
+    <nav class="rp-breadcrumbs" aria-label="Breadcrumb" data-rp-reveal>
+      <a href="/">Home</a>
+      <span>/</span>
+      <span aria-current="page">Cart</span>
+    </nav>
+
+    <div class="rp-cart__hero">
+      <div class="rp-cart__hero-copy" data-rp-reveal>
+        <p class="rp-section-eyebrow">Bag overview</p>
+        <h1 class="rp-section-heading">Your cart.</h1>
+        <div class="rp-section-copy rte">
+          <p>Review your dresses, confirm the rental details captured by the booking flow, and head to checkout when everything feels right.</p>
+        </div>
+      </div>
+
+      <div class="rp-cart__hero-card" data-rp-reveal>
+        <p class="rp-cart__hero-label">Current edit</p>
+        <p class="rp-cart__hero-value">{{ cart.items.size }} {% if cart.items.size == 1 %}item{% else %}items{% endif %}</p>
+        <p class="rp-cart__hero-note">Royal Mail tracked delivery and prepaid returns stay included through checkout.</p>
+      </div>
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      {% form 'cart', cart, class: 'rp-cart__form' %}
+        <div class="rp-cart__grid">
+          <div class="rp-cart__items">
+            {%- for item in cart.items -%}
+              <article class="rp-cart__item" data-rp-reveal>
+                <a class="rp-cart__item-media" href="{{ item.url | default: routes.cart_url }}">
+                  {%- if item.image != blank -%}
+                    {{
+                      item.image
+                      | image_url: width: 720
+                      | image_tag:
+                        class: 'rp-cart__image',
+                        loading: 'lazy',
+                        widths: '240, 360, 520, 720',
+                        alt: item.product.title
+                    }}
+                  {%- else -%}
+                    {{ 'product-3' | placeholder_svg_tag: 'rp-cart__image rp-cart__image--placeholder' }}
+                  {%- endif -%}
+                </a>
+
+                <div class="rp-cart__item-content">
+                  <div class="rp-cart__item-header">
+                    <div>
+                      {%- if item.product.vendor != blank -%}
+                        <p class="rp-cart__item-vendor">{{ item.product.vendor }}</p>
+                      {%- endif -%}
+                      <h2 class="rp-cart__item-title">
+                        <a href="{{ item.url | default: routes.cart_url }}">{{ item.product.title }}</a>
+                      </h2>
+                      {%- unless item.product.has_only_default_variant -%}
+                        <p class="rp-cart__item-variant">{{ item.variant.title }}</p>
+                      {%- endunless -%}
+                    </div>
+
+                    <div class="rp-cart__item-price">
+                      <span class="rp-cart__item-price-current">{{ item.final_line_price | money }}</span>
+                      {%- if item.original_line_price > item.final_line_price -%}
+                        <s class="rp-cart__item-price-original">{{ item.original_line_price | money }}</s>
+                      {%- endif -%}
+                    </div>
+                  </div>
+
+                  {%- assign visible_property_count = 0 -%}
+                  {%- for property in item.properties -%}
+                    {%- assign property_key_first = property.first | slice: 0 -%}
+                    {%- if property.last != blank and property_key_first != '_' -%}
+                      {%- assign visible_property_count = visible_property_count | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+
+                  {%- if visible_property_count > 0 -%}
+                    <div class="rp-cart__details">
+                      <p class="rp-cart__details-label">Rental details</p>
+                      <dl class="rp-cart__details-list">
+                        {%- for property in item.properties -%}
+                          {%- assign property_key_first = property.first | slice: 0 -%}
+                          {%- if property.last != blank and property_key_first != '_' -%}
+                            <div class="rp-cart__details-item">
+                              <dt>{{ property.first }}</dt>
+                              <dd>
+                                {%- if property.last contains '/uploads/' -%}
+                                  <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+                                {%- else -%}
+                                  {{ property.last }}
+                                {%- endif -%}
+                              </dd>
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </dl>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if item.line_level_discount_allocations.size > 0 -%}
+                    <ul class="rp-cart__discounts" role="list">
+                      {%- for discount in item.line_level_discount_allocations -%}
+                        <li>{{ discount.discount_application.title }} (-{{ discount.amount | money }})</li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+
+                  <div class="rp-cart__item-actions">
+                    <label class="rp-cart__quantity" for="CartUpdates-{{ item.key }}">
+                      <span>Units</span>
+                      <input
+                        id="CartUpdates-{{ item.key }}"
+                        class="rp-cart__quantity-input"
+                        type="number"
+                        name="updates[]"
+                        value="{{ item.quantity }}"
+                        min="0"
+                        inputmode="numeric"
+                        aria-label="Units for {{ item.product.title }}"
+                      >
+                    </label>
+
+                    <a class="rp-cart__remove" href="{{ item.url_to_remove }}">
+                      Remove
+                    </a>
+                  </div>
+                </div>
+              </article>
+            {%- endfor -%}
+
+            <div class="rp-cart__footer-actions" data-rp-reveal>
+              <button class="rp-button rp-button--ghost" type="submit" name="update">
+                Update cart
+              </button>
+              <a class="rp-text-link" href="/collections/all">Continue shopping</a>
+            </div>
+          </div>
+
+          <aside class="rp-cart__summary" data-rp-reveal>
+            <div class="rp-cart__summary-card">
+              <p class="rp-cart__summary-label">Order summary</p>
+              <h2 class="rp-cart__summary-heading">Ready when you are.</h2>
+
+              <div class="rp-cart__summary-row">
+                <span>Items subtotal</span>
+                <span>{{ cart.items_subtotal_price | money }}</span>
+              </div>
+
+              {%- if cart.cart_level_discount_applications.size > 0 -%}
+                {%- for discount in cart.cart_level_discount_applications -%}
+                  <div class="rp-cart__summary-row rp-cart__summary-row--discount">
+                    <span>{{ discount.title }}</span>
+                    <span>-{{ discount.total_allocated_amount | money }}</span>
+                  </div>
+                {%- endfor -%}
+              {%- endif -%}
+
+              <div class="rp-cart__summary-row rp-cart__summary-row--total">
+                <span>Estimated total</span>
+                <span>{{ cart.total_price | money }}</span>
+              </div>
+
+              <label class="rp-cart__note" for="CartNote">
+                <span>Order note</span>
+                <textarea id="CartNote" name="note" rows="4" placeholder="Add anything helpful for your rental or delivery here.">{{ cart.note }}</textarea>
+              </label>
+
+              <p class="rp-cart__summary-copy">Taxes and final shipping costs are confirmed at checkout. Rental dates and protected turnaround remain controlled by your booking flow.</p>
+
+              <div class="rp-cart__summary-actions">
+                <button class="rp-button rp-button--ghost" type="submit" name="update">
+                  Save changes
+                </button>
+                <button class="rp-button rp-button--solid" type="submit" name="checkout">
+                  Proceed to checkout
+                </button>
+              </div>
+
+              {%- if additional_checkout_buttons -%}
+                <div class="rp-cart__dynamic-checkout">
+                  {{ content_for_additional_checkout_buttons }}
+                </div>
+              {%- endif -%}
+            </div>
+          </aside>
+        </div>
+      {% endform %}
+    {%- else -%}
+      <div class="rp-cart__empty" data-rp-reveal>
+        <div class="rp-cart__empty-card">
+          <p class="rp-section-eyebrow">No dresses yet</p>
+          <h2 class="rp-section-heading">Your cart is still empty.</h2>
+          <div class="rp-section-copy rte">
+            <p>Start in the edit, add the styles you want to rent, and your bag will appear here with all of the booking details attached.</p>
+          </div>
+          <div class="rp-cart__empty-actions">
+            <a class="rp-button rp-button--solid" href="/collections/all">Browse dresses</a>
+            <a class="rp-button rp-button--ghost" href="/">Back home</a>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main cart",
+  "settings": []
+}
+{% endschema %}

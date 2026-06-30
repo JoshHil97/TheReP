@@ -1,0 +1,242 @@
+{%- liquid
+  capture page_url_bundle
+    render 'rp-page-url-bundle'
+  endcapture
+  assign page_url_parts = page_url_bundle | split: '|||'
+  assign about_page_url = page_url_parts[0] | strip
+  assign faq_page_url = page_url_parts[1] | strip
+  assign terms_page_url = page_url_parts[2] | strip
+  assign returns_page_url = page_url_parts[3] | strip
+  assign how_it_works_url = page_url_parts[4] | strip
+  assign sizing_page_url = page_url_parts[5] | strip
+
+  if section.settings.about_page_url != blank
+    assign about_page_url = section.settings.about_page_url
+  endif
+  if section.settings.faq_page_url != blank
+    assign faq_page_url = section.settings.faq_page_url
+  endif
+  if section.settings.terms_page_url != blank
+    assign terms_page_url = section.settings.terms_page_url
+  endif
+  if section.settings.returns_page_url != blank
+    assign returns_page_url = section.settings.returns_page_url
+  endif
+-%}
+
+<footer class="rp-footer">
+  <div class="rp-shell rp-shell--wide">
+    <div class="rp-footer__lead" data-rp-reveal>
+      <div class="rp-footer__lead-intro">
+        <p class="rp-section-eyebrow">The Re:P Club</p>
+        <h2 class="rp-section-heading">Premium dress rental for every celebration.</h2>
+      </div>
+
+      <div class="rp-footer__lead-copy">
+        <p>
+          Curated occasionwear, tracked delivery, prepaid returns, and a booking journey that feels polished from first click to send-back.
+        </p>
+        <div class="rp-footer__lead-actions">
+          <a class="rp-button rp-button--solid" href="/collections/all">Browse dresses</a>
+          {%- if section.settings.instagram_url != blank -%}
+            <a class="rp-text-link" href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">Follow on Instagram</a>
+          {%- endif -%}
+          {%- if section.settings.tiktok_url != blank -%}
+            <a class="rp-text-link" href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener">Follow on TikTok</a>
+          {%- endif -%}
+          {%- if section.settings.instagram_url == blank and section.settings.tiktok_url == blank -%}
+            <a class="rp-text-link" href="/">Back home</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="rp-footer__top">
+      <div class="rp-footer__brand" data-rp-reveal>
+        <a class="rp-footer__brand-link" href="/">
+          {%- if section.settings.logo != blank -%}
+            {{
+              section.settings.logo
+              | image_url: width: section.settings.logo_width
+              | image_tag:
+                class: 'rp-footer__logo-image',
+                alt: shop.name,
+                widths: '120, 180, 240, 320'
+            }}
+          {%- else -%}
+            <img
+              class="rp-footer__logo-image"
+              src="{{ 're-p-logo-transparent.png' | asset_url }}"
+              alt="{{ shop.name }}"
+              width="220"
+              height="120"
+              loading="lazy"
+            >
+          {%- endif -%}
+        </a>
+        <p class="rp-footer__brand-copy">
+          Curated luxury dress rental for weddings, dinners and special events.
+        </p>
+        <p class="rp-footer__brand-note">Tracked delivery, prepaid returns, and premium pieces chosen for unforgettable event dressing.</p>
+      </div>
+
+      <div class="rp-footer__columns">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            <div class="rp-footer__column" data-rp-reveal {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                {%- liquid
+                  assign block_heading = block.settings.heading | downcase
+                  assign block_heading_url = blank
+
+                  if block_heading == 'about' or block_heading == 'about us'
+                    assign block_heading_url = about_page_url
+                  elsif block_heading == 'faqs' or block_heading == 'faq'
+                    assign block_heading_url = faq_page_url
+                  elsif block_heading contains 'terms'
+                    assign block_heading_url = terms_page_url
+                  endif
+                -%}
+                <h2 class="rp-footer__heading">
+                  {%- if block_heading_url != blank -%}
+                    <a href="{{ block_heading_url }}">{{ block.settings.heading }}</a>
+                  {%- else -%}
+                    {{ block.settings.heading }}
+                  {%- endif -%}
+                </h2>
+              {%- endif -%}
+
+              {%- if block.type == 'link_list' and block.settings.menu != blank -%}
+                <ul class="rp-footer__links" role="list">
+                  {%- for link in linklists[block.settings.menu].links -%}
+                    {%- capture resolved_url -%}{% render 'rp-nav-link-url', link_title: link.title, link_url: link.url %}{%- endcapture -%}
+                    <li><a href="{{ resolved_url | strip }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- elsif block.type == 'text' -%}
+                <div class="rp-footer__text rte">{{ block.settings.copy }}</div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="rp-footer__column" data-rp-reveal>
+            <h2 class="rp-footer__heading">Customer care</h2>
+            <ul class="rp-footer__links" role="list">
+              <li><a href="{{ how_it_works_url }}">How it works</a></li>
+              <li><a href="{{ returns_page_url }}">Delivery & returns</a></li>
+              <li><a href="{{ faq_page_url }}">FAQs</a></li>
+              <li><a href="{{ sizing_page_url }}">Sizing</a></li>
+            </ul>
+          </div>
+          <div class="rp-footer__column" data-rp-reveal>
+            <h2 class="rp-footer__heading"><a href="{{ about_page_url }}">About</a></h2>
+            <div class="rp-footer__text rte">
+              <p><a href="{{ about_page_url }}">Standout occasionwear, thoughtfully sourced so you can rent with confidence and return with ease.</a></p>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="rp-footer__bottom">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+      <div class="rp-footer__legal">
+        <a href="{{ about_page_url }}">About</a>
+        <a href="{{ faq_page_url }}">FAQs</a>
+        <a href="{{ terms_page_url }}">Terms</a>
+        <a href="{{ returns_page_url }}">Returns</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "RP Footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 100,
+      "max": 260,
+      "step": 10,
+      "unit": "px",
+      "default": 160
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "about_page_url",
+      "label": "About page URL"
+    },
+    {
+      "type": "url",
+      "id": "faq_page_url",
+      "label": "FAQ page URL"
+    },
+    {
+      "type": "url",
+      "id": "terms_page_url",
+      "label": "Terms page URL"
+    },
+    {
+      "type": "url",
+      "id": "returns_page_url",
+      "label": "Returns page URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Link list",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Customer care"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "About"
+        },
+        {
+          "type": "richtext",
+          "id": "copy",
+          "label": "Copy",
+          "default": "<p>Standout occasionwear, thoughtfully sourced so you can rent with confidence and return with ease.</p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

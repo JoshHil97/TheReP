@@ -1,0 +1,337 @@
+<section class="rp-home-hero rp-home-hero--{{ section.settings.height }} rp-home-hero--{{ section.settings.content_alignment }}" style="--hero-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};">
+  <div class="rp-shell rp-shell--wide">
+    <div class="rp-home-hero__film" data-rp-reveal>
+      <div class="rp-home-hero__film-media">
+        {%- assign bundled_film_poster = 'rp-brand-film-poster.jpg' | asset_url -%}
+        {%- if section.settings.campaign_poster != blank -%}
+          {%- assign bundled_film_poster = section.settings.campaign_poster | image_url: width: 1600 -%}
+        {%- endif -%}
+
+        {%- if section.settings.campaign_video != blank -%}
+          {{
+            section.settings.campaign_video
+            | video_tag:
+              class: 'rp-home-hero__video',
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true,
+              preload: 'metadata',
+              image_size: '1800x'
+          }}
+        {%- elsif section.settings.use_bundled_video -%}
+          {%- comment -%}
+            Bundled brand film keeps the homepage motion live immediately after theme upload.
+            A Shopify-hosted campaign video selected in the theme editor still overrides it.
+          {%- endcomment -%}
+          <video
+            class="rp-home-hero__video"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            poster="{{ bundled_film_poster }}"
+            aria-hidden="true"
+            tabindex="-1"
+            data-rp-decorative-video
+          >
+            <source src="{{ 'rp-brand-film.mp4' | asset_url }}" type="video/mp4">
+          </video>
+        {%- elsif section.settings.campaign_poster != blank -%}
+          {{
+            section.settings.campaign_poster
+            | image_url: width: 2200
+            | image_tag:
+              class: 'rp-home-hero__film-image',
+              loading: 'eager',
+              widths: '900, 1200, 1600, 2200',
+              alt: section.settings.video_heading | default: section.settings.heading
+          }}
+        {%- elsif section.settings.desktop_image != blank or section.settings.mobile_image != blank -%}
+          {{
+            section.settings.desktop_image
+            | default: section.settings.mobile_image
+            | image_url: width: 2200
+            | image_tag:
+              class: 'rp-home-hero__film-image',
+              loading: 'eager',
+              widths: '900, 1200, 1600, 2200',
+              alt: section.settings.video_heading | default: section.settings.heading
+          }}
+        {%- else -%}
+          <img class="rp-home-hero__film-image rp-home-hero__film-image--fallback" src="{{ 'rp-model-midnight.jpg' | asset_url }}" alt="Campaign film placeholder for The Re:P Club" width="1600" height="1000" loading="eager">
+        {%- endif -%}
+      </div>
+
+      <div class="rp-home-hero__film-overlay">
+        <div class="rp-home-hero__film-copy">
+          {%- if section.settings.video_label != blank -%}
+            <p class="rp-home-hero__film-label">{{ section.settings.video_label }}</p>
+          {%- endif -%}
+          {%- if section.settings.video_heading != blank -%}
+            <h2 class="rp-home-hero__film-heading">{{ section.settings.video_heading }}</h2>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.video_copy != blank -%}
+          <div class="rp-home-hero__film-note rte">{{ section.settings.video_copy }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="rp-home-hero__layout">
+      <div class="rp-home-hero__content" data-rp-reveal>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="rp-home-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h1 class="rp-home-hero__heading">{{ section.settings.heading }}</h1>
+        {%- endif -%}
+
+        {%- if section.settings.copy != blank -%}
+          <div class="rp-home-hero__copy rte">{{ section.settings.copy }}</div>
+        {%- endif -%}
+
+        <div class="rp-home-hero__actions">
+          {%- if section.settings.primary_label != blank and section.settings.primary_link != blank -%}
+            <a class="rp-button rp-button--solid" href="{{ section.settings.primary_link }}">{{ section.settings.primary_label }}</a>
+          {%- endif -%}
+          {%- if section.settings.secondary_label != blank and section.settings.secondary_link != blank -%}
+            <a class="rp-button rp-button--ghost" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label }}</a>
+          {%- endif -%}
+        </div>
+
+        <div class="rp-home-hero__highlights" aria-label="Service highlights">
+          <span>Curated luxury edit</span>
+          <span>Tracked delivery & prepaid return</span>
+          <span>Booking-app protected dates</span>
+        </div>
+
+        <div class="rp-home-hero__stats" aria-label="Rental service details">
+          <div class="rp-home-hero__stat">
+            <p class="rp-home-hero__stat-label">Minimum hire</p>
+            <p class="rp-home-hero__stat-value">3 day rental window</p>
+          </div>
+          <div class="rp-home-hero__stat">
+            <p class="rp-home-hero__stat-label">Condition</p>
+            <p class="rp-home-hero__stat-value">Professionally cleaned every dispatch</p>
+          </div>
+          <div class="rp-home-hero__stat">
+            <p class="rp-home-hero__stat-label">Returns</p>
+            <p class="rp-home-hero__stat-value">Prepaid and timed around your booking</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rp-home-hero__aside" data-rp-reveal>
+        <div class="rp-home-hero__portrait-card">
+          {%- if section.settings.portrait_label != blank -%}
+            <p class="rp-home-hero__portrait-label">{{ section.settings.portrait_label }}</p>
+          {%- endif -%}
+
+          <div class="rp-home-hero__portrait-shell">
+            {%- if section.settings.desktop_image != blank or section.settings.mobile_image != blank -%}
+              <picture>
+                {%- if section.settings.mobile_image != blank -%}
+                  <source media="(max-width: 749px)" srcset="{{ section.settings.mobile_image | image_url: width: 900 }}">
+                {%- endif -%}
+                {{
+                  section.settings.desktop_image
+                  | default: section.settings.mobile_image
+                  | image_url: width: 2200
+                  | image_tag:
+                    class: 'rp-home-hero__image',
+                    loading: 'eager',
+                    widths: '900, 1200, 1600, 2200',
+                    alt: section.settings.heading
+                }}
+              </picture>
+            {%- else -%}
+              <img class="rp-home-hero__image rp-home-hero__image--fallback" src="{{ 'rp-home-hero-portrait.jpeg' | asset_url }}" alt="Fuchsia Satin Halter Maxi Dress worn on model" width="1022" height="1536" loading="eager">
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="rp-home-hero__note">
+          <p class="rp-home-hero__note-label">{{ section.settings.note_label }}</p>
+          <p class="rp-home-hero__note-title">{{ section.settings.note_heading }}</p>
+          <div class="rp-home-hero__note-copy rte">{{ section.settings.note_copy }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RP Home hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Luxury dress rental"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Borrow the dress that makes the moment."
+    },
+    {
+      "type": "richtext",
+      "id": "copy",
+      "label": "Copy",
+      "default": "<p>Curated eveningwear and occasion dressing, delivered with ease and returned with a prepaid label.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button label",
+      "default": "Browse dresses"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary button label",
+      "default": "How it works"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "video",
+      "id": "campaign_video",
+      "label": "Campaign video"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_bundled_video",
+      "label": "Use bundled brand film",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "campaign_poster",
+      "label": "Campaign poster"
+    },
+    {
+      "type": "text",
+      "id": "video_label",
+      "label": "Video label",
+      "default": "Campaign film"
+    },
+    {
+      "type": "text",
+      "id": "video_heading",
+      "label": "Video heading",
+      "default": "Leave space for motion at the top of the page."
+    },
+    {
+      "type": "richtext",
+      "id": "video_copy",
+      "label": "Video copy",
+      "default": "<p>Upload a short runway or fit clip here so the homepage feels alive, while the collection and product pages stay calmer and easier to scan.</p>"
+    },
+    {
+      "type": "text",
+      "id": "portrait_label",
+      "label": "Portrait label",
+      "default": "Editorial still"
+    },
+    {
+      "type": "text",
+      "id": "note_label",
+      "label": "Note label",
+      "default": "Why this works"
+    },
+    {
+      "type": "text",
+      "id": "note_heading",
+      "label": "Note heading",
+      "default": "Editorial first. Decision-ready when they start browsing."
+    },
+    {
+      "type": "richtext",
+      "id": "note_copy",
+      "label": "Note copy",
+      "default": "<p>Model imagery creates desire first, then the cleaner ghost mannequin views take over on collection and product pages when comparison matters.</p>"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top left"
+        },
+        {
+          "value": "center-left",
+          "label": "Center left"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        }
+      ],
+      "default": "bottom-left"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "%",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "tall",
+          "label": "Tall"
+        },
+        {
+          "value": "full",
+          "label": "Full"
+        }
+      ],
+      "default": "tall"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP Home hero"
+    }
+  ]
+}
+{% endschema %}

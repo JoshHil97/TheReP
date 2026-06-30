@@ -1,0 +1,87 @@
+{
+  "sections": {
+    "main": {
+      "type": "rp-faq-full",
+      "blocks": {
+        "faq_fit": {
+          "type": "faq",
+          "settings": {
+            "question": "The dress doesn’t fit.. what now?",
+            "answer": "<p>If your item doesn’t fit, please contact us as soon as possible and we’ll do our best to help. Please arrange for the dress to be returned next day. Depending on availability, we may be able to offer an exchange for a different size or style, or advise you on the best next steps. If an exchange isn’t possible, once the dress is received, you will be refunded the full item price, excluding shipping and cleaning costs. The cleaning fee will be credited to your account and can be used towards your next rental.</p>"
+          }
+        },
+        "faq_returns": {
+          "type": "faq",
+          "settings": {
+            "question": "How does the return process work?",
+            "answer": "<p>Being the efficient Queen that I am, the returns have already been processed for you. On the return date stated in your email, you will need to package your dress in the same box it was shipped in, all the bits are already provided for you, then take your parcel and QR code to your local post office and let the team do the rest.</p>"
+          }
+        },
+        "faq_return_date": {
+          "type": "faq",
+          "settings": {
+            "question": "When do I need to have the item ready for return?",
+            "answer": "<p>The item must be fully packed and dropped at your local post office by 12pm on your return date. If the item is not returned on this date additional charges will be accrued.</p>"
+          }
+        },
+        "faq_package": {
+          "type": "faq",
+          "settings": {
+            "question": "Do I need to package the item?",
+            "answer": "<p>Yes. Please keep all packaging safe during your rental period, as this is the same box you’ll use to return your dress. Your item should be securely packed and ready for transport using the packaging and equipment provided.</p>"
+          }
+        },
+        "faq_packaging": {
+          "type": "faq",
+          "settings": {
+            "question": "What if I damage or lose the packaging?",
+            "answer": "<p>Welp. We’ll charge you (jk). If possible, please reuse another box of a similar size and durability, as we always encourage sustainable choices. If that’s not an option, you’ll need to purchase a replacement box similar to the original one to safely return your item.</p>"
+          }
+        },
+        "faq_change_return": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I change my return date?",
+            "answer": "<p>Return dates may be changed if requested in advance and subject to availability. Changes made close to the return date may not always be possible.</p>"
+          }
+        },
+        "faq_late": {
+          "type": "faq",
+          "settings": {
+            "question": "What happens if the item is returned late?",
+            "answer": "<p>Late returns may affect other bookings and will incur additional charges. We operate on a strict schedule to ensure availability for all customers.</p>"
+          }
+        },
+        "faq_delivery": {
+          "type": "faq",
+          "settings": {
+            "question": "Do I need to be home for delivery?",
+            "answer": "<p>Ideally yes, or you must arrange a safe, accessible location for delivery. Someone must be available unless a safe drop arrangement has been agreed in advance.</p>"
+          }
+        },
+        "faq_tracking": {
+          "type": "faq",
+          "settings": {
+            "question": "Will I get tracking details?",
+            "answer": "<p>Yes. We will provide courier confirmation and tracking information where available.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_fit",
+        "faq_returns",
+        "faq_return_date",
+        "faq_package",
+        "faq_packaging",
+        "faq_change_return",
+        "faq_late",
+        "faq_delivery",
+        "faq_tracking"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

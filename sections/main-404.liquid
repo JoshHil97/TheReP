@@ -1,0 +1,122 @@
+{%- liquid
+  assign requested_path = request.path
+  assign canonical_path = canonical_url | replace: shop.secure_url, '' | replace: shop.url, '' | split: '?' | first
+  assign pageurl_token = content_for_header | split: '"pageurl":"' | last | split: '"' | first | replace: '\/', '/' | replace: '%20', ' ' | replace: '\u0026', '&'
+
+  if canonical_path != blank and canonical_path != '/404'
+    assign requested_path = canonical_path
+  endif
+
+  if pageurl_token contains request.host
+    assign requested_path = pageurl_token | split: request.host | last | split: '?' | first
+  endif
+
+  capture page_kind
+    render 'rp-page-handle-detect', source: requested_path
+  endcapture
+  assign page_kind = page_kind | strip
+
+  assign fallback_title = 'Page not found'
+  case page_kind
+    when 'about'
+      assign fallback_title = 'About us'
+    when 'faq'
+      assign fallback_title = 'FAQs'
+    when 'terms'
+      assign fallback_title = 'Terms & conditions'
+    when 'delivery'
+      assign fallback_title = 'Delivery & returns'
+    when 'how-it-works'
+      assign fallback_title = 'How it works'
+    when 'sizing'
+      assign fallback_title = 'Sizing'
+  endcase
+-%}
+
+{%- if page_kind != 'generic' -%}
+  {% render 'rp-page-render', page_kind: page_kind, section: section, title: fallback_title, show_breadcrumbs: true %}
+{%- else -%}
+  <section class="rp-404">
+    <div class="rp-shell">
+      <div class="rp-404__card" data-rp-reveal>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="rp-section-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <h1 class="rp-section-heading">{{ section.settings.heading }}</h1>
+
+        {%- if section.settings.copy != blank -%}
+          <div class="rp-section-copy rte">{{ section.settings.copy }}</div>
+        {%- endif -%}
+
+        <div class="rp-404__actions">
+          {%- if section.settings.primary_label != blank and section.settings.primary_link != blank -%}
+            <a class="rp-button rp-button--solid" href="{{ section.settings.primary_link }}">{{ section.settings.primary_label }}</a>
+          {%- endif -%}
+
+          {%- if section.settings.secondary_label != blank and section.settings.secondary_link != blank -%}
+            <a class="rp-text-link" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Main 404",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Page not found"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "This page is no longer here."
+    },
+    {
+      "type": "richtext",
+      "id": "copy",
+      "label": "Copy",
+      "default": "<p>Return to the collection to browse available dresses, or head back home to continue exploring The Re:P Club.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button label",
+      "default": "Browse dresses"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary button label",
+      "default": "Back home"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "founder_image",
+      "label": "Founder image"
+    },
+    {
+      "type": "image_picker",
+      "id": "signature_image",
+      "label": "Signature image"
+    }
+  ]
+}
+{% endschema %}

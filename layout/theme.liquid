@@ -1,0 +1,51 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#e8eddc">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 96, height: 96 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} | tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} | Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} | {{ shop.name }}{% endunless -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {{ content_for_header }}
+
+    {{ 'rp-base.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'rp-sections.css' | asset_url | stylesheet_tag }}
+    {%- if request.page_type == 'product' -%}
+      {{ 'rp-product.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+    {%- if request.page_type == 'collection' or request.page_type == 'index' or request.page_type == 'search' or request.page_type == 'product' -%}
+      {{ 'rp-collection.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+    {{ 'rp-premium.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'rp-interactions.js' | asset_url }}" defer="defer"></script>
+  </head>
+
+  <body class="rp-body template-{{ template.name | handle }} template-suffix-{{ template.suffix | default: 'default' | handle }}">
+    <a class="skip-to-content-link visually-hidden" href="#MainContent">Skip to content</a>
+
+    {% section 'rp-announcement-bar' %}
+    {% section 'rp-header-overlay' %}
+
+    <main id="MainContent" class="rp-main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'rp-footer' %}
+  </body>
+</html>

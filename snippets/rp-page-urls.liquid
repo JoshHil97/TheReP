@@ -1,0 +1,41 @@
+{%- liquid
+  assign resolved_url = routes.root_url
+  assign fallback_url = routes.root_url
+  assign page_object = blank
+
+  case page_key
+    when 'about'
+      assign fallback_url = '/pages/about-us'
+      assign page_object = pages['about-us']
+    when 'faq'
+      assign fallback_url = '/pages/faqs'
+      assign page_object = pages['faqs']
+    when 'terms'
+      assign fallback_url = '/pages/terms-conditions'
+      assign page_object = pages['terms-conditions']
+    when 'delivery'
+      assign fallback_url = '/pages/delivery-returns'
+      assign page_object = pages['delivery-returns']
+    when 'how-it-works'
+      assign fallback_url = '/pages/how-it-works'
+      assign page_object = pages['how-it-works']
+    when 'sizing'
+      assign fallback_url = '/pages/sizing'
+      assign page_object = pages['sizing']
+    when 'browse'
+      assign fallback_url = '/collections/all'
+      assign resolved_url = fallback_url
+      assign page_object = blank
+    when 'home'
+      assign resolved_url = routes.root_url
+      assign page_object = blank
+  endcase
+
+  if page_object != blank and page_object.url != blank
+    assign resolved_url = page_object.url
+  elsif page_key != 'home' and page_key != 'browse'
+    assign resolved_url = fallback_url
+  endif
+
+  echo resolved_url
+-%}

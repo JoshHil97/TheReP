@@ -1,0 +1,38 @@
+{%- case page_kind -%}
+  {%- when 'about' -%}
+    {% render 'rp-page-about-body', page: page, section: section, title: title, show_breadcrumbs: show_breadcrumbs %}
+  {%- when 'faq' -%}
+    <section class="rp-page-main rp-page-main--faq">
+      <div class="rp-shell">
+        {%- if show_breadcrumbs -%}
+          {% render 'rp-page-breadcrumbs', title: title %}
+        {%- endif -%}
+
+        {% render 'rp-page-faq-hero', section: section %}
+
+        <div class="rp-page-main__faq-list">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              <div data-rp-reveal {{ block.shopify_attributes }}>
+                {% render 'rp-accordion-item', id: block.id, title: block.settings.question, content: block.settings.answer, open: forloop.first %}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {% render 'rp-page-faq-items-default' %}
+          {%- endif -%}
+        </div>
+
+        {%- if page != blank and page.content != blank -%}
+          <div class="rp-page-main__faq-extra rte" data-rp-reveal>{{ page.content }}</div>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- when 'terms' -%}
+    {% render 'rp-page-legal-body', page: page, title: title, show_breadcrumbs: show_breadcrumbs %}
+  {%- when 'delivery' -%}
+    {% render 'rp-page-delivery-body', page: page, title: title, show_breadcrumbs: show_breadcrumbs %}
+  {%- when 'how-it-works' -%}
+    {% render 'rp-page-how-it-works-body', page: page, title: title, show_breadcrumbs: show_breadcrumbs %}
+  {%- when 'sizing' -%}
+    {% render 'rp-page-sizing-body', page: page, title: title, show_breadcrumbs: show_breadcrumbs %}
+{%- endcase -%}

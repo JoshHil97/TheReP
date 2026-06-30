@@ -1,0 +1,25 @@
+{%- liquid
+  assign title_key = link_title | downcase
+  assign current_url = link_url | default: '' | downcase
+  assign page_key = blank
+
+  if current_url contains '/pages/about' or title_key == 'about' or title_key == 'about us'
+    assign page_key = 'about'
+  elsif current_url contains '/pages/faq' or title_key == 'faq' or title_key == 'faqs'
+    assign page_key = 'faq'
+  elsif current_url contains '/pages/terms' or title_key contains 'terms'
+    assign page_key = 'terms'
+  elsif current_url contains '/pages/delivery' or current_url contains '/pages/returns' or title_key contains 'delivery' or title_key contains 'return'
+    assign page_key = 'delivery'
+  elsif current_url contains '/pages/how-it-works' or title_key contains 'how it works'
+    assign page_key = 'how-it-works'
+  elsif current_url contains '/pages/sizing' or title_key contains 'sizing'
+    assign page_key = 'sizing'
+  endif
+
+  if page_key != blank
+    render 'rp-page-urls', page_key: page_key
+  else
+    echo link_url
+  endif
+-%}

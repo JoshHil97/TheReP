@@ -1,0 +1,396 @@
+{%- liquid
+  assign short_description = product.metafields.custom.short_description
+
+  capture intro_content
+    if section.settings.show_intro and short_description != blank and product.description != blank
+      echo short_description | metafield_tag
+    endif
+  endcapture
+
+  capture description_content
+    if product.description != blank
+      echo product.description
+    elsif short_description != blank
+      echo short_description | metafield_tag
+    endif
+  endcapture
+
+  capture rental_terms_content
+    if product.metafields.custom.rental_terms != blank
+      echo product.metafields.custom.rental_terms | metafield_tag
+    else
+      echo '<p>Rental dates, dispatch timing, cancellations, and turnaround are governed by The Re:P Club terms and conditions.</p><p>Your connected booking app confirms availability and protects the turnaround between rentals before checkout.</p>'
+    endif
+  endcapture
+
+  capture delivery_content
+    if product.metafields.custom.delivery_returns != blank
+      echo product.metafields.custom.delivery_returns | metafield_tag
+    else
+      echo '<p>Your dress is sent by Royal Mail tracked delivery and timed around your booking window so it arrives ready for the moment.</p>'
+    endif
+  endcapture
+
+  capture returns_page_url
+    render 'rp-page-urls', page_key: 'delivery'
+  endcapture
+  assign returns_page_url = returns_page_url | strip
+
+  capture returns_content
+    echo '<p>Every order includes a prepaid Royal Mail return label. The rental flow allows an 8 day turnaround so each piece can be returned, checked, and prepared properly for the next booking.</p><p><a href="'
+    echo returns_page_url
+    echo '">Read the full returns page.</a></p>'
+  endcapture
+
+  capture reviews_content
+    if product.metafields.custom.reviews != blank
+      echo product.metafields.custom.reviews | metafield_tag
+    elsif section.settings.show_reviews_placeholder
+      echo '<p>No reviews yet. Be the first to rate this dress and share how it fit, felt, and photographed.</p>'
+    endif
+  endcapture
+
+  assign primary_collection = product.collections.first
+  assign primary_media = product.featured_media | default: product.media.first
+  assign selected_variant = product.selected_or_first_available_variant
+
+  for media in product.media
+    assign media_alt = media.alt | default: '' | downcase
+
+    if media_alt contains 'ghost' or media_alt contains 'mannequin'
+      assign primary_media = media
+      break
+    endif
+  endfor
+
+  assign recent_image = primary_media.preview_image | default: product.featured_image
+  assign recent_price = product.price | money
+
+  assign has_app_block = false
+  capture app_markup
+    for block in section.blocks
+      if block.type == '@app'
+        assign has_app_block = true
+        echo '<div class="rp-rental-widget-shell__app"'
+        echo block.shopify_attributes
+        echo '>'
+        render block
+        echo '</div>'
+      endif
+    endfor
+  endcapture
+-%}
+
+<section class="rp-product-main rp-tone--{{ section.settings.tone }}">
+  <div class="rp-shell rp-shell--wide">
+    <nav class="rp-breadcrumbs" aria-label="Breadcrumb" data-rp-reveal>
+      <a href="/">Home</a>
+      <span>/</span>
+      {%- if primary_collection != blank -%}
+        <a href="{{ primary_collection.url }}">{{ primary_collection.title }}</a>
+      {%- else -%}
+        <a href="/collections/all">The Collection</a>
+      {%- endif -%}
+      <span>/</span>
+      <span aria-current="page">{{ product.title }}</span>
+    </nav>
+
+    <div class="rp-product-main__grid">
+      <div class="rp-product-main__media" data-rp-reveal>
+        {%- if product.media.size > 0 -%}
+          {%- if primary_media != blank -%}
+            <figure
+              class="rp-product-main__media-frame is-featured"
+              {% if primary_media.media_type == 'image' %}
+                data-rp-zoomable
+                tabindex="0"
+                role="button"
+                aria-label="Enlarge {{ product.title | escape }} image"
+              {% endif %}
+            >
+              {%- case primary_media.media_type -%}
+                {%- when 'image' -%}
+                  {{
+                    primary_media
+                    | image_url: width: 1800
+                    | image_tag:
+                      class: 'rp-product-main__image',
+                      loading: 'lazy',
+                      widths: '720, 960, 1200, 1600, 1800',
+                      alt: primary_media.alt | default: product.title
+                  }}
+                {%- else -%}
+                  {{ primary_media | media_tag: class: 'rp-product-main__image', image_size: '1600x' }}
+              {%- endcase -%}
+            </figure>
+          {%- endif -%}
+
+          {%- for media in product.media -%}
+            {%- if primary_media != blank and media.id == primary_media.id -%}
+              {%- continue -%}
+            {%- endif -%}
+
+            <figure
+              class="rp-product-main__media-frame is-secondary"
+              {% if media.media_type == 'image' %}
+                data-rp-zoomable
+                tabindex="0"
+                role="button"
+                aria-label="Enlarge {{ product.title | escape }} image"
+              {% endif %}
+            >
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  {{
+                    media
+                    | image_url: width: 1800
+                    | image_tag:
+                      class: 'rp-product-main__image',
+                      loading: 'lazy',
+                      widths: '720, 960, 1200, 1600, 1800',
+                      alt: media.alt | default: product.title
+                  }}
+                {%- else -%}
+                  {{ media | media_tag: class: 'rp-product-main__image', image_size: '1600x' }}
+              {%- endcase -%}
+            </figure>
+          {%- endfor -%}
+        {%- else -%}
+          {{ 'product-3' | placeholder_svg_tag: 'rp-product-main__placeholder' }}
+        {%- endif -%}
+      </div>
+
+      <div class="rp-product-main__info{% if section.settings.enable_sticky_info %} is-sticky{% endif %}" data-rp-sticky data-rp-reveal>
+        {%- if section.settings.show_vendor and product.vendor != blank -%}
+          <p class="rp-product-main__vendor">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="rp-product-main__title">{{ product.title }}</h1>
+        {% render 'rp-price-per-day', product: product %}
+        <p class="rp-product-main__price-note">Final rental total updates in the booking calendar once you choose your dates.</p>
+        <a class="rp-product-main__reviews-link" href="#product-reviews">
+          <span class="rp-product-main__reviews-stars" aria-hidden="true">★★★★★</span>
+          <span>Rate this dress out of 5 stars</span>
+        </a>
+
+        {%- if intro_content != blank -%}
+          <div class="rp-product-main__intro rte">{{ intro_content }}</div>
+        {%- endif -%}
+
+        <div class="rp-product-main__summary" aria-label="Rental summary">
+          <div class="rp-product-main__summary-item">
+            <span class="rp-product-main__summary-label">Condition</span>
+            <span class="rp-product-main__summary-value">Quality checked</span>
+          </div>
+          <div class="rp-product-main__summary-item">
+            <span class="rp-product-main__summary-label">Delivery</span>
+            <span class="rp-product-main__summary-value">Royal Mail tracked</span>
+          </div>
+          <div class="rp-product-main__summary-item">
+            <span class="rp-product-main__summary-label">Returns</span>
+            <span class="rp-product-main__summary-value">Prepaid label included</span>
+          </div>
+        </div>
+
+        {% render 'rp-rental-widget-shell', has_app_block: has_app_block, app_markup: app_markup, product: product, selected_variant: selected_variant, section_id: section.id %}
+
+        <div class="rp-product-main__microcopy">
+          {% render 'rp-product-badges' %}
+          <p class="rp-product-main__shipping-note">
+            Availability, protected booking dates, and turnaround timing are controlled by your connected booking app.
+          </p>
+        </div>
+
+        <div class="rp-product-main__accordions">
+          {%- assign description_content = description_content | strip -%}
+          {%- if description_content != blank -%}
+            {% render 'rp-accordion-item', id: 'description-' | append: section.id, title: 'Description', content: description_content, open: true %}
+          {%- endif -%}
+
+          {%- assign delivery_content = delivery_content | strip -%}
+          {%- if delivery_content != blank -%}
+            {% render 'rp-accordion-item', id: 'delivery-' | append: section.id, title: 'Delivery', content: delivery_content %}
+          {%- endif -%}
+
+          {%- assign returns_content = returns_content | strip -%}
+          {%- if returns_content != blank -%}
+            {% render 'rp-accordion-item', id: 'returns-' | append: section.id, title: 'Returns', content: returns_content %}
+          {%- endif -%}
+
+          {%- assign rental_terms_content = rental_terms_content | strip -%}
+          {%- if rental_terms_content != blank -%}
+            {% render 'rp-accordion-item', id: 'terms-' | append: section.id, title: 'T&Cs', content: rental_terms_content %}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'editorial_note' -%}
+        <div class="rp-product-main__editorial" data-rp-reveal {{ block.shopify_attributes }}>
+          {%- if block.settings.heading != blank -%}
+            <p class="rp-section-eyebrow">{{ block.settings.heading }}</p>
+          {%- endif -%}
+          {%- if block.settings.copy != blank -%}
+            <div class="rte">{{ block.settings.copy }}</div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    <section class="rp-product-main__reviews" id="product-reviews" data-rp-reveal>
+      <div class="rp-product-main__reviews-copy">
+        <p class="rp-section-eyebrow">Reviews</p>
+        <h2 class="rp-section-heading">Rate this dress.</h2>
+        <div class="rp-product-main__reviews-stars-display" aria-hidden="true">★★★★★</div>
+        <div class="rp-product-main__reviews-body rte">{{ reviews_content }}</div>
+      </div>
+
+      <div class="rp-product-main__reviews-form-card">
+        {% form 'contact', id: 'product-review-form', class: 'rp-review-form' %}
+          {%- if form.posted_successfully? -%}
+            <p class="rp-review-form__success">Thanks for your review. We have received it and will check it before publishing.</p>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="rp-review-form__errors">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <input type="hidden" name="contact[Product]" value="{{ product.title }}">
+
+          <fieldset class="rp-review-form__rating">
+            <legend>Rate out of 5</legend>
+            <div class="rp-review-form__stars">
+              {%- for rating in (1..5) reversed -%}
+                <input id="ReviewRating-{{ section.id }}-{{ rating }}" type="radio" name="contact[Rating]" value="{{ rating }}" {% if forloop.first %}required{% endif %}>
+                <label for="ReviewRating-{{ section.id }}-{{ rating }}" title="{{ rating }} stars">★</label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+
+          <div class="rp-review-form__fields">
+            <label>
+              <span>Name</span>
+              <input type="text" name="contact[name]" required>
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="contact[email]" required>
+            </label>
+          </div>
+
+          <label class="rp-review-form__message">
+            <span>Write your review</span>
+            <textarea name="contact[body]" rows="6" placeholder="Share the fit, feel, event, and any styling notes." required></textarea>
+          </label>
+
+          <button class="rp-button rp-button--solid" type="submit">Send review</button>
+        {% endform %}
+      </div>
+    </section>
+
+    <section class="rp-product-main__recently-viewed" data-rp-recently-viewed hidden>
+      <div class="rp-product-main__recently-head" data-rp-reveal>
+        <div>
+          <p class="rp-section-eyebrow">Recently viewed</p>
+          <h2 class="rp-section-heading">Seen on your last pass.</h2>
+        </div>
+        <p class="rp-section-copy">Jump back into dresses you viewed earlier without starting your search again.</p>
+      </div>
+
+      <div class="rp-product-main__recently-grid" data-rp-recently-list></div>
+    </section>
+
+    <script type="application/json" data-rp-product-json>
+      {
+        "id": {{ product.id | json }},
+        "title": {{ product.title | json }},
+        "url": {{ product.url | json }},
+        "price": {{ recent_price | json }},
+        "image": {{ recent_image | image_url: width: 960 | json }},
+        "vendor": {{ product.vendor | json }}
+      }
+    </script>
+
+    <div class="rp-lightbox" data-rp-lightbox hidden>
+      <button class="rp-lightbox__overlay" type="button" data-rp-lightbox-close aria-label="Close image preview"></button>
+      <div class="rp-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Product image preview">
+        <button class="rp-lightbox__close" type="button" data-rp-lightbox-close aria-label="Close image preview">Close</button>
+        <img class="rp-lightbox__image" src="" alt="" data-rp-lightbox-image>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main product rental",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_intro",
+      "label": "Show intro",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_info",
+      "label": "Enable sticky product info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews_placeholder",
+      "label": "Show review placeholder when empty",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Tone",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        }
+      ],
+      "default": "light"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "editorial_note",
+      "name": "Editorial note",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Styling note"
+        },
+        {
+          "type": "richtext",
+          "id": "copy",
+          "label": "Copy",
+          "default": "<p>Use this space for a short editorial note, occasion styling guidance, or fit insight that supports the rental decision.</p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

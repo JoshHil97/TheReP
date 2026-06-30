@@ -1,0 +1,70 @@
+<section class="rp-page-main rp-page-main--legal">
+  <div class="rp-shell">
+    {%- if show_breadcrumbs -%}
+      {% render 'rp-page-breadcrumbs', title: title %}
+    {%- endif -%}
+
+    <div class="rp-page-main__legal-hero" data-rp-reveal>
+      <p class="rp-section-eyebrow">Terms &amp; conditions</p>
+      <h1 class="rp-section-heading">The Boring Bits</h1>
+      <div class="rp-section-copy rte">
+        <p>Here&rsquo;s the important stuff we legally need to tell you (but we&rsquo;ll keep it simple).</p>
+      </div>
+      <p class="rp-page-main__legal-meta">The Re:P Club Dress Rental Agreement. Effective date 05.26. Last updated 05.26.</p>
+    </div>
+
+    <div class="rp-page-main__legal-grid">
+      <div class="rp-page-main__legal-content">
+        {% render 'rp-accordion-item', id: 'legal-1', title: '1. Eligibility', content: '<ul><li>You must be 18 years or older to place an order.</li><li>All information provided at checkout must be accurate and complete.</li><li>We reserve the right to decline or cancel an order where necessary.</li></ul>', open: true %}
+        {% render 'rp-accordion-item', id: 'legal-2', title: '2. Rental period', content: '<ul><li>Your rental period begins on the confirmed delivery date shown by courier tracking.</li><li>Your return date will be clearly stated in your booking confirmation. Items must be posted back on or before this date.</li><li>Late returns may incur additional charges.</li></ul>' %}
+        {% render 'rp-accordion-item', id: 'legal-3', title: '3. Payment', content: '<ul><li>Full payment is required at the time of booking.</li><li>All prices are listed in Pounds Sterling (&pound;).</li><li>We do not require a security deposit.</li></ul>' %}
+        {% render 'rp-accordion-item', id: 'legal-4', title: '4. Card authorisation', content: '<p>By completing your booking, you authorise The Re:P Club to charge your payment method for late return fees, additional rental days, repair costs where applicable, specialist cleaning beyond normal wear, replacement value up to &pound;150 per item or current retail value if higher, and reasonable recovery costs for unpaid balances.</p>' %}
+        {% render 'rp-accordion-item', id: 'legal-5', title: '5. Delivery & risk', content: '<ul><li>All orders are dispatched using tracked courier services.</li><li>Responsibility for the garment transfers to you once the parcel is marked as delivered by the courier to the address provided at checkout.</li><li>We are not responsible for incorrect addresses entered at checkout, parcels left unattended after confirmed delivery, or courier delays outside of our control.</li></ul>' %}
+        {% render 'rp-accordion-item', id: 'legal-6', title: '6. Returns', content: '<ul><li>You must return your item using the return method provided.</li><li>You remain responsible for the garment until it is safely received and signed for by us.</li><li>Proof of postage alone does not confirm return. Tracking must show delivery.</li></ul>' %}
+        {% render 'rp-accordion-item', id: 'legal-7', title: '7. Condition & care', content: '<ul><li>All garments are professionally cleaned and quality checked before dispatch.</li><li>Please notify us within 24 hours of delivery if there are any concerns.</li><li>Do not alter, tailor, wash, dry clean, lend, or sub-rent the garment.</li><li>Normal wear is expected and accepted. Significant damage is not.</li></ul>' %}
+        {% render 'rp-accordion-item', id: 'legal-8', title: '8. Late returns', content: '<ul><li>A late fee of &pound;30 per day will apply.</li><li>If more than 5 days overdue, the item may be treated as non-returned and the replacement value may be charged.</li><li>Late fees do not remove the obligation to return the garment.</li></ul>' %}
+        {% render 'rp-accordion-item', id: 'legal-9', title: '9. Damage, loss & non-return', content: '<p>You are responsible for the garment from confirmed delivery until it is returned and inspected. Damage beyond normal wear includes permanent staining, rips, tears or burns, missing embellishments, strong odours including smoke, and unauthorised alterations. If an item is lost, not returned, or damaged beyond repair, we may charge the cost of repair or the full retail replacement value.</p>' %}
+        {% render 'rp-accordion-item', id: 'legal-10', title: '10. Cancellations', content: '<ul><li>Cancellations made 7 or more days before dispatch will receive a full refund.</li><li>Cancellations made within 7 days of dispatch are non-refundable.</li><li>Once an item has been dispatched, cancellations and refunds are not available.</li><li>All cancellation requests must be made in writing.</li></ul>' %}
+        {% render 'rp-accordion-item', id: 'legal-11', title: '11. Courier delays', content: '<p>While we aim to ensure timely delivery, we are not responsible for courier delays outside of our control. Refunds will only be considered if a parcel is officially declared lost by the courier.</p>' %}
+        {% render 'rp-accordion-item', id: 'legal-12', title: '12. Sizing & fit', content: '<p>Customers are responsible for selecting the correct size. We cannot guarantee fit, but refunds can be provided under our discretion for sizing issues.</p>' %}
+        {% render 'rp-accordion-item', id: 'legal-13', title: '13. Limitation of liability', content: '<ul><li>Our liability shall not exceed the total rental fee paid.</li><li>We are not liable for indirect or consequential losses.</li><li>Nothing in these Terms excludes liability where it would be unlawful to do so.</li></ul>' %}
+        {% render 'rp-accordion-item', id: 'legal-14', title: '14. Customer photography & marketing', content: '<p>If you tag The Re:P Club on social media, use our branded hashtag, send us photographs or videos, or post reviews featuring images, you grant us a non-exclusive, worldwide, royalty free licence to repost and share your content for marketing purposes across our website, social media, email marketing, and digital advertising.</p><p>By tagging or submitting content, you confirm you have permission to share it and understand no payment or compensation is owed for reposted content.</p>' %}
+        {% render 'rp-accordion-item', id: 'legal-15', title: '15. Governing law', content: '<p>These Terms are governed by the laws of England and Wales. Any disputes shall be subject to the jurisdiction of the courts of England and Wales.</p>' %}
+        {% render 'rp-accordion-item', id: 'legal-16', title: '16. Entire agreement', content: '<p>These Terms form the entire agreement between you and The Re:P Club regarding your rental.</p>' %}
+      </div>
+
+      <aside class="rp-page-main__legal-aside" data-rp-reveal>
+        <div class="rp-page-main__card">
+          <p class="rp-page-main__card-label">Checkout agreement</p>
+          <p class="rp-page-main__card-copy">The booking extension handles the required tick-box agreement and electronic signature directly at checkout.</p>
+        </div>
+        <div class="rp-page-main__card">
+          <p class="rp-page-main__card-label">Rental agreement &amp; payment authorisation</p>
+          <p class="rp-page-main__card-copy">By placing an order, the customer confirms they are over 18, accept responsibility for the garment from courier-confirmed delivery until return, agree to return dates, accept the &pound;30 per day late fee, and authorise future charges where applicable under the agreement.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="rp-page-main__legal-checkout" data-rp-reveal>
+      <p class="rp-page-main__card-label">Rental agreement &amp; payment authorisation</p>
+      <h2>This is the agreement captured at checkout.</h2>
+      <ol>
+        <li>I am 18 years or older and legally authorised to use the payment method provided.</li>
+        <li>I have read and agree to the full Terms &amp; Conditions of The Re:P Club.</li>
+        <li>I understand this is a temporary rental and not a purchase.</li>
+        <li>I accept full responsibility for the garment from the moment courier tracking confirms delivery until it is returned and received by The Re:P Club.</li>
+        <li>I agree to return the item on or before the stated return date using the tracked service.</li>
+        <li>I understand that late returns incur a &pound;30 per day fee.</li>
+        <li>I authorise The Re:P Club to charge my payment method for late return fees, additional rental days, repair or specialist cleaning costs, and the full retail replacement value if the item is lost, not returned, or damaged beyond repair.</li>
+        <li>I understand that confirmed courier delivery constitutes proof of receipt.</li>
+        <li>I understand that courier delays outside the Company&rsquo;s control do not qualify for refunds.</li>
+        <li>I agree not to initiate a payment dispute or chargeback for charges made in accordance with the agreed Terms &amp; Conditions.</li>
+      </ol>
+      <p class="rp-page-main__legal-small">By ticking the box and completing payment, the customer provides electronic signature consent and authorises future charges where applicable under this agreement.</p>
+    </div>
+
+    {%- if page != blank and page.content != blank -%}
+      <div class="rp-page-main__legal-extra rte" data-rp-reveal>{{ page.content }}</div>
+    {%- endif -%}
+  </div>
+</section>

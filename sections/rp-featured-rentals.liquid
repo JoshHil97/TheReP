@@ -1,0 +1,110 @@
+{%- liquid
+  assign featured_collection = section.settings.collection
+-%}
+
+<section class="rp-featured-rentals">
+  <div class="rp-shell">
+    <div class="rp-section-head rp-section-head--split" data-rp-reveal>
+      <div>
+        {%- if section.settings.heading != blank -%}
+          <h2 class="rp-section-heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.copy != blank -%}
+          <div class="rp-section-copy rte">{{ section.settings.copy }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+        <a class="rp-text-link" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="rp-product-grid rp-product-grid--three">
+      {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
+        {%- for product in featured_collection.products limit: section.settings.products_to_show -%}
+          {% render 'rp-product-card', product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        <article class="rp-product-card is-placeholder">
+          <div class="rp-product-card__media">
+            <img class="rp-product-card__image rp-product-card__placeholder-image" src="{{ 'rp-dress-fuchsia-ghost.png' | asset_url }}" alt="Fuchsia Satin Halter Maxi Dress" width="1200" height="1800" loading="lazy">
+          </div>
+          <div class="rp-product-card__content">
+            <h3 class="rp-product-card__title">Fuchsia Satin Halter Maxi Dress</h3>
+            <div class="rp-price-per-day"><span class="rp-price-per-day__amount">£25</span><span class="rp-price-per-day__suffix">per day</span></div>
+          </div>
+        </article>
+
+        <article class="rp-product-card is-placeholder">
+          <div class="rp-product-card__media">
+            <img class="rp-product-card__image rp-product-card__placeholder-image" src="{{ 'rp-dress-midnight-ghost.png' | asset_url }}" alt="Midnight Navy Tulle Ballgown" width="1200" height="1800" loading="lazy">
+          </div>
+          <div class="rp-product-card__content">
+            <h3 class="rp-product-card__title">Midnight Navy Tulle Ballgown</h3>
+            <div class="rp-price-per-day"><span class="rp-price-per-day__amount">£35</span><span class="rp-price-per-day__suffix">per day</span></div>
+          </div>
+        </article>
+
+        <article class="rp-product-card is-placeholder">
+          <div class="rp-product-card__media">
+            <img class="rp-product-card__image rp-product-card__placeholder-image" src="{{ 'rp-dress-olive-ghost.png' | asset_url }}" alt="Olive Sculpted Couture Dress" width="1200" height="1800" loading="lazy">
+          </div>
+          <div class="rp-product-card__content">
+            <h3 class="rp-product-card__title">Olive Sculpted Couture Dress</h3>
+            <div class="rp-price-per-day"><span class="rp-price-per-day__amount">£40</span><span class="rp-price-per-day__suffix">per day</span></div>
+          </div>
+        </article>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RP Featured rentals",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "See the silhouette first."
+    },
+    {
+      "type": "richtext",
+      "id": "copy",
+      "label": "Copy",
+      "default": "<p>Start with the clean ghost view, then open each dress to see the normal imagery styled on the body.</p>"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Link label",
+      "default": "Rent now"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP Featured rentals"
+    }
+  ]
+}
+{% endschema %}

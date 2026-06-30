@@ -1,0 +1,47 @@
+{%- liquid
+  assign bundle_about = '/pages/about-us'
+  assign bundle_faq = '/pages/faqs'
+  assign bundle_terms = '/pages/terms-conditions'
+  assign bundle_delivery = '/pages/delivery-returns'
+  assign bundle_how_it_works = '/pages/how-it-works'
+  assign bundle_sizing = '/pages/sizing'
+  assign bundle_browse = '/collections/all'
+
+  if pages['about-us'].url != blank
+    assign bundle_about = pages['about-us'].url
+  endif
+
+  if pages['faqs'].url != blank
+    assign bundle_faq = pages['faqs'].url
+  endif
+
+  if pages['terms-conditions'].url != blank
+    assign bundle_terms = pages['terms-conditions'].url
+  endif
+
+  if pages['delivery-returns'].url != blank
+    assign bundle_delivery = pages['delivery-returns'].url
+  endif
+
+  if pages['how-it-works'].url != blank
+    assign bundle_how_it_works = pages['how-it-works'].url
+  endif
+
+  if pages['sizing'].url != blank
+    assign bundle_sizing = pages['sizing'].url
+  endif
+
+  echo bundle_about
+  echo '|||'
+  echo bundle_faq
+  echo '|||'
+  echo bundle_terms
+  echo '|||'
+  echo bundle_delivery
+  echo '|||'
+  echo bundle_how_it_works
+  echo '|||'
+  echo bundle_sizing
+  echo '|||'
+  echo bundle_browse
+-%}

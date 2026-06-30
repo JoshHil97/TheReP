@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "rp-page-how-it-works",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

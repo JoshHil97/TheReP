@@ -1,0 +1,11 @@
+.DS_Store
+**/.DS_Store
+
+# Local theme upload bundles
+*.zip
+
+# Temporary build / restore notes from local theme work
+homepage-restore-pass-01/
+page-fix-pass-01/
+separate-pages-pass-01/
+signature-pass-01/

@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "rp-page-sizing",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

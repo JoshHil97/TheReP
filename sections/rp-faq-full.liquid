@@ -1,0 +1,45 @@
+{% render 'rp-page-render', page_kind: 'faq', page: page, section: section, title: page.title | default: 'FAQs', show_breadcrumbs: true %}
+
+{% schema %}
+{
+  "name": "RP FAQ full",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How does the return process work?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Use the same box, take your parcel and QR code to your local post office, and the rest is already handled for you.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP FAQ full",
+      "blocks": [
+        { "type": "faq" },
+        { "type": "faq" },
+        { "type": "faq" }
+      ]
+    }
+  ]
+}
+{% endschema %}

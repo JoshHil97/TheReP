@@ -1,0 +1,198 @@
+{%- liquid
+  assign transparent_class = ''
+  capture page_url_bundle
+    render 'rp-page-url-bundle'
+  endcapture
+  assign page_url_parts = page_url_bundle | split: '|||'
+  assign about_page_url = page_url_parts[0] | strip
+  assign faq_page_url = page_url_parts[1] | strip
+  assign terms_page_url = page_url_parts[2] | strip
+  assign returns_page_url = page_url_parts[3] | strip
+  assign how_it_works_url = page_url_parts[4] | strip
+  assign sizing_page_url = page_url_parts[5] | strip
+  assign browse_page_url = page_url_parts[6] | strip
+
+  if request.page_type == 'index' and section.settings.transparent_on_home
+    assign transparent_class = 'is-transparent'
+  elsif request.page_type == 'product' and section.settings.transparent_on_product
+    assign transparent_class = 'is-transparent'
+  endif
+-%}
+
+<header class="rp-header {{ transparent_class }}" data-rp-header>
+  <div class="rp-shell rp-shell--wide">
+    <div class="rp-header__inner">
+      <div class="rp-header__brand">
+        <a class="rp-header__logo-link" href="/">
+          {%- if section.settings.logo != blank -%}
+            {{
+              section.settings.logo
+              | image_url: width: section.settings.logo_width
+              | image_tag:
+                class: 'rp-header__logo-image',
+                alt: shop.name,
+                widths: '120, 180, 240, 320'
+            }}
+          {%- else -%}
+            <img
+              class="rp-header__logo-image rp-header__logo-image--fallback"
+              src="{{ 're-p-logo-transparent.png' | asset_url }}"
+              alt="{{ shop.name }}"
+              width="220"
+              height="120"
+              loading="eager"
+            >
+          {%- endif -%}
+        </a>
+      </div>
+
+      <nav class="rp-header__nav" aria-label="Primary">
+        {%- if section.settings.menu != blank -%}
+          <ul class="rp-header__menu" role="list">
+            {%- for link in linklists[section.settings.menu].links -%}
+              {%- capture resolved_url -%}{% render 'rp-nav-link-url', link_title: link.title, link_url: link.url %}{%- endcapture -%}
+              <li>
+                <a href="{{ resolved_url | strip }}">{{ link.title }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          <ul class="rp-header__menu" role="list">
+            <li><a href="{{ browse_page_url }}">Browse</a></li>
+            <li><a href="{{ how_it_works_url }}">How it works</a></li>
+            <li><a href="{{ about_page_url }}">About</a></li>
+            <li><a href="{{ faq_page_url }}">FAQs</a></li>
+          </ul>
+        {%- endif -%}
+      </nav>
+
+      <div class="rp-header__actions">
+        <button class="rp-header__action-link" type="button" data-rp-search-open>
+          Search
+        </button>
+
+        <a class="rp-header__action-link" href="{{ routes.cart_url }}" data-rp-cart-open>
+          Cart
+          <span class="rp-header__cart-count{% if cart.item_count == 0 %} is-empty{% endif %}" data-rp-cart-count>{{ cart.item_count }}</span>
+        </a>
+
+        <details class="rp-header__mobile-menu" data-rp-mobile-menu>
+          <summary class="rp-header__mobile-summary">Menu</summary>
+          <div class="rp-header__mobile-panel">
+            {%- if section.settings.menu != blank -%}
+              <ul class="rp-header__mobile-links" role="list">
+                {%- for link in linklists[section.settings.menu].links -%}
+                  {%- capture resolved_url -%}{% render 'rp-nav-link-url', link_title: link.title, link_url: link.url %}{%- endcapture -%}
+                  <li>
+                    <a href="{{ resolved_url | strip }}">{{ link.title }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <ul class="rp-header__mobile-links" role="list">
+                <li><a href="{{ browse_page_url }}">Browse</a></li>
+                <li><a href="{{ how_it_works_url }}">How it works</a></li>
+                <li><a href="{{ about_page_url }}">About</a></li>
+                <li><a href="{{ faq_page_url }}">FAQs</a></li>
+                <li><a href="{{ terms_page_url }}">Terms</a></li>
+                <li><a href="{{ returns_page_url }}">Returns</a></li>
+                <li><a href="{{ sizing_page_url }}">Sizing</a></li>
+              </ul>
+            {%- endif -%}
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="rp-search-panel" data-rp-search-panel hidden aria-hidden="true">
+  <button class="rp-search-panel__overlay" type="button" data-rp-search-close aria-label="Close search"></button>
+  <div class="rp-search-panel__card" role="dialog" aria-modal="true" aria-label="Search dresses">
+    <div class="rp-search-panel__head">
+      <div>
+        <p class="rp-search-panel__eyebrow">Search the edit</p>
+        <p class="rp-search-panel__copy">Start typing to jump straight to a dress.</p>
+      </div>
+      <button class="rp-search-panel__close" type="button" data-rp-search-close aria-label="Close search">Close</button>
+    </div>
+
+    <label class="rp-search-panel__field">
+      <span class="visually-hidden">Search dresses</span>
+      <input type="search" placeholder="Search by dress name, style or colour" autocomplete="off" spellcheck="false" data-rp-predictive-input>
+    </label>
+
+    <div class="rp-search-panel__results" data-rp-predictive-results>
+      <p class="rp-search-panel__state">Search results will appear here.</p>
+    </div>
+  </div>
+</div>
+
+<div class="rp-cart-drawer" data-rp-cart-drawer hidden aria-hidden="true">
+  <button class="rp-cart-drawer__overlay" type="button" data-rp-cart-close aria-label="Close cart"></button>
+  <aside class="rp-cart-drawer__panel" role="dialog" aria-modal="true" aria-label="Cart drawer">
+    <div class="rp-cart-drawer__head">
+      <div>
+        <p class="rp-cart-drawer__eyebrow">Cart</p>
+        <h2 class="rp-cart-drawer__title">Your current edit.</h2>
+      </div>
+      <button class="rp-cart-drawer__close" type="button" data-rp-cart-close aria-label="Close cart">Close</button>
+    </div>
+
+    <div class="rp-cart-drawer__content" data-rp-cart-content>
+      <p class="rp-cart-drawer__state">Loading your cart...</p>
+    </div>
+
+    <div class="rp-cart-drawer__footer">
+      <div class="rp-cart-drawer__summary">
+        <span>Subtotal</span>
+        <strong data-rp-cart-subtotal>{{ cart.total_price | money }}</strong>
+      </div>
+
+      <div class="rp-cart-drawer__actions">
+        <a class="rp-button rp-button--ghost" href="{{ routes.cart_url }}">View full cart</a>
+        <a class="rp-button rp-button--solid" href="/checkout">Checkout</a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+{% schema %}
+{
+  "name": "RP Header overlay",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 80,
+      "max": 220,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_on_home",
+      "label": "Transparent on homepage",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_on_product",
+      "label": "Transparent on product pages",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

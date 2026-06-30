@@ -1,0 +1,27 @@
+<section class="rp-page-main">
+  <div class="rp-shell">
+    {%- if show_breadcrumbs -%}
+      {% render 'rp-page-breadcrumbs', title: title %}
+    {%- endif -%}
+
+    <div class="rp-page-main__grid">
+      <div class="rp-page-main__content" data-rp-reveal>
+        <p class="rp-section-eyebrow">Sizing</p>
+        <h1 class="rp-section-heading">Fit notes for a smoother rental.</h1>
+        <div class="rp-page-main__body rte">
+          <p>Start with your usual occasionwear size and read the product description for any specific fit notes.</p>
+          <p>If you are between sizes, prioritise comfort and movement, especially for longer events.</p>
+          <p>If your dress arrives and the fit is not right, contact us as soon as possible and we&rsquo;ll do our best to help with next steps.</p>
+          {%- if page != blank and page.content != blank -%}
+            {{ page.content }}
+          {%- endif -%}
+        </div>
+      </div>
+      <aside class="rp-page-main__aside" data-rp-reveal>
+        <div class="rp-page-main__card"><p class="rp-page-main__card-label">Best starting point</p><p class="rp-page-main__card-copy">Your usual occasionwear size is normally the best place to begin.</p></div>
+        <div class="rp-page-main__card"><p class="rp-page-main__card-label">Check the PDP</p><p class="rp-page-main__card-copy">Use the dress description and imagery to catch silhouette and fit cues before booking.</p></div>
+        <div class="rp-page-main__card"><p class="rp-page-main__card-label">Need help?</p><p class="rp-page-main__card-copy">If the fit is wrong on arrival, contact us quickly so we can advise on the next step.</p></div>
+      </aside>
+    </div>
+  </div>
+</section>

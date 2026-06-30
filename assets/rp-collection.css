@@ -1,0 +1,498 @@
+.rp-product-card {
+  position: relative;
+}
+
+.rp-product-card__link {
+  display: block;
+}
+
+.rp-product-card__media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.4rem;
+  background: rgba(248, 250, 245, 0.6);
+  aspect-ratio: 4 / 5;
+}
+
+.rp-product-card__image,
+.rp-product-card__placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    opacity 400ms ease,
+    transform 600ms ease;
+}
+
+.rp-product-card__image--secondary {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .rp-product-card.has-hover-media:hover .rp-product-card__image--secondary {
+    opacity: 1;
+  }
+
+  .rp-product-card.has-hover-media:hover .rp-product-card__image--primary {
+    opacity: 0;
+  }
+
+  .rp-product-card:hover .rp-product-card__image {
+    transform: scale(1.015);
+  }
+}
+
+.rp-product-card__content {
+  padding-top: 1rem;
+}
+
+.rp-product-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.rp-product-card__title {
+  margin: 0;
+  font-family: var(--rp-font-display);
+  font-size: 1.2rem;
+  line-height: 1.05;
+  font-weight: 400;
+}
+
+.rp-product-card__note {
+  margin: 0.5rem 0 0;
+  color: rgba(33, 28, 24, 0.62);
+}
+
+.rp-collection-main {
+  padding: clamp(2.5rem, 5vw, 5rem) 0;
+}
+
+.rp-collection-main__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: 2rem;
+}
+
+.rp-collection-main__count {
+  margin: 0;
+  color: rgba(33, 28, 24, 0.54);
+}
+
+.rp-collection-main__header-media {
+  width: min(15rem, 100%);
+}
+
+.rp-collection-main__header-image {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 1.2rem;
+}
+
+.rp-collection-main__toolbar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.rp-collection-main__filters-toggle {
+  display: none;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--rp-color-border);
+  border-radius: 999px;
+}
+
+.rp-collection-main__sort select {
+  min-width: 11rem;
+}
+
+.rp-collection-main__layout {
+  display: grid;
+  grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr);
+  gap: 2rem;
+}
+
+.rp-collection-main__filters {
+  align-self: start;
+  position: sticky;
+  top: calc(var(--rp-header-height) + 1rem);
+  padding: 1.2rem;
+  border-radius: 1.4rem;
+  background: rgba(248, 250, 245, 0.62);
+  border: 1px solid rgba(33, 28, 24, 0.08);
+}
+
+.rp-filter-group + .rp-filter-group {
+  margin-top: 0.4rem;
+}
+
+.rp-filter-group__summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 0.85rem 0;
+}
+
+.rp-filter-group__summary::-webkit-details-marker {
+  display: none;
+}
+
+.rp-filter-group__content {
+  padding: 0 0 0.8rem;
+}
+
+.rp-filter-group__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.rp-filter-group__list li + li {
+  margin-top: 0.5rem;
+}
+
+.rp-filter-group__label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+  color: rgba(33, 28, 24, 0.7);
+}
+
+.rp-filter-group__label input {
+  margin-right: auto;
+}
+
+.rp-filter-group__count {
+  color: rgba(33, 28, 24, 0.45);
+}
+
+.rp-filter-group__price-range {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rp-filter-group__price-range label {
+  display: grid;
+  gap: 0.35rem;
+  color: rgba(33, 28, 24, 0.64);
+  font-size: 0.88rem;
+}
+
+.rp-collection-main__filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.rp-collection-main__products {
+  min-width: 0;
+}
+
+.rp-collection-main__empty {
+  padding: 2rem;
+  border: 1px solid var(--rp-color-border);
+  border-radius: 1.4rem;
+  background: rgba(248, 250, 245, 0.52);
+}
+
+.rp-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(33, 28, 24, 0.08);
+  color: rgba(33, 28, 24, 0.56);
+}
+
+@media (max-width: 989px) {
+  .rp-collection-main__header,
+  .rp-collection-main__layout {
+    grid-template-columns: minmax(0, 1fr);
+    display: grid;
+  }
+
+  .rp-collection-main__filters-toggle {
+    display: inline-flex;
+  }
+
+  .rp-collection-main__filters {
+    position: fixed;
+    inset: auto 1rem 1rem;
+    top: auto;
+    bottom: 1rem;
+    max-height: calc(100vh - 7rem);
+    overflow: auto;
+    transform: translateY(110%);
+    transition: transform var(--rp-transition);
+    z-index: 30;
+  }
+
+  body.rp-filters-open::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(33, 28, 24, 0.2);
+    z-index: 20;
+  }
+
+  body.rp-filters-open .rp-collection-main__filters {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 749px) {
+  .rp-product-card__header {
+    flex-direction: column;
+    align-items: start;
+    gap: 0.25rem;
+  }
+
+  .rp-collection-main__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+
+/* Premium collection refinement */
+.rp-product-grid--collection {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.rp-collection-main__header {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.rp-collection-main__header-copy {
+  max-width: 40rem;
+}
+
+.rp-collection-main__count {
+  align-self: center;
+  font-size: 0.95rem;
+}
+
+.rp-collection-main__toolbar {
+  margin-bottom: 2rem;
+}
+
+.rp-collection-main__sort select {
+  min-width: 10rem;
+  background: rgba(255,255,255,0.72);
+}
+
+.rp-collection-main__layout {
+  grid-template-columns: minmax(13rem, 15rem) minmax(0, 1fr);
+  gap: 2.5rem;
+}
+
+.rp-collection-main__filters {
+  padding: 1rem;
+  border-radius: 1.2rem;
+  background: rgba(255,255,255,0.7);
+}
+
+.rp-filter-group__summary {
+  padding: 0.75rem 0;
+}
+
+.rp-product-card__media {
+  background: rgba(255,255,255,0.82);
+}
+
+.rp-product-card__content {
+  padding-top: 0.85rem;
+}
+
+.rp-product-card__header {
+  align-items: start;
+}
+
+.rp-product-card__title {
+  font-size: 1.28rem;
+}
+
+.rp-product-card .rp-price-per-day {
+  margin-top: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.rp-product-card .rp-price-per-day__amount {
+  font-size: 1.15rem;
+}
+
+.rp-product-card .rp-price-per-day__suffix {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 989px) {
+  .rp-product-grid--collection,
+  .rp-collection-main__layout,
+  .rp-collection-main__header {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+
+/* Hard-coded collection cleanup */
+.rp-product-grid--collection { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.rp-collection-main__layout { grid-template-columns: minmax(12rem, 14rem) minmax(0, 1fr); gap: 2.25rem; }
+.rp-collection-main__filters {
+  background: rgba(255,255,255,0.62);
+  backdrop-filter: blur(8px);
+}
+.rp-product-card__media {
+  background: rgba(255,255,255,0.84);
+  aspect-ratio: 0.78;
+}
+.rp-product-card__title { max-width: 14ch; }
+@media (max-width: 989px) {
+  .rp-product-grid--collection { grid-template-columns: 1fr; }
+}
+
+/* Homepage featured rentals card upgrade */
+.rp-product-card__image,
+.rp-product-card__placeholder,
+.rp-product-card__placeholder-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition:
+    opacity 400ms ease,
+    transform 600ms ease;
+}
+
+.rp-product-card__image,
+.rp-product-card__placeholder,
+.rp-product-card__placeholder-image {
+  object-fit: cover;
+}
+
+.rp-featured-rentals .rp-product-grid--three {
+  gap: clamp(1.1rem, 2vw, 1.6rem);
+}
+
+.rp-featured-rentals .rp-product-card {
+  height: 100%;
+  padding: clamp(0.85rem, 1.5vw, 1rem);
+  border-radius: 1.65rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 245, 0.86) 100%);
+  border: 1px solid rgba(30, 23, 20, 0.08);
+  box-shadow: 0 18px 40px rgba(30, 23, 20, 0.05);
+  transition:
+    transform var(--rp-transition),
+    box-shadow var(--rp-transition),
+    border-color var(--rp-transition);
+}
+
+.rp-featured-rentals .rp-product-card__link {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.rp-featured-rentals .rp-product-card__media {
+  background:
+    radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.86) 36%, rgba(236, 240, 230, 0.94) 100%);
+  border-radius: 1.25rem;
+  aspect-ratio: 0.82;
+}
+
+.rp-featured-rentals .rp-product-card__content {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem 0.15rem 0.1rem;
+}
+
+.rp-featured-rentals .rp-product-card__header {
+  align-items: flex-start;
+}
+
+.rp-featured-rentals .rp-product-card__title {
+  max-width: 14ch;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+}
+
+.rp-featured-rentals .rp-product-card .rp-price-per-day {
+  margin-top: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.rp-featured-rentals .rp-product-card .rp-price-per-day__amount {
+  font-size: 1.18rem;
+}
+
+.rp-featured-rentals .rp-product-card__note {
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.rp-featured-rentals .rp-product-card.is-placeholder .rp-product-card__media {
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.9) 40%, rgba(233, 237, 227, 0.94) 100%);
+}
+
+.rp-featured-rentals .rp-product-card.is-placeholder .rp-product-card__placeholder-image {
+  object-fit: contain;
+  object-position: center bottom;
+  transform: scale(1.18);
+  transform-origin: center bottom;
+  filter: drop-shadow(0 24px 26px rgba(30, 23, 20, 0.12));
+}
+
+.rp-featured-rentals .rp-product-card.is-placeholder .rp-product-card__media::after {
+  content: "Ghost mannequin view";
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(30, 23, 20, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  color: rgba(30, 23, 20, 0.6);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (hover: hover) {
+  .rp-featured-rentals .rp-product-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(30, 23, 20, 0.12);
+    box-shadow: 0 24px 48px rgba(30, 23, 20, 0.08);
+  }
+
+  .rp-featured-rentals .rp-product-card.is-placeholder:hover .rp-product-card__placeholder-image {
+    transform: scale(1.22);
+  }
+}
+
+@media (max-width: 989px) {
+  .rp-featured-rentals .rp-product-card__title {
+    max-width: none;
+  }
+}

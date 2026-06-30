@@ -1,0 +1,24 @@
+{% render 'rp-page-render', page_kind: 'about', page: page, section: section, title: page.title | default: 'About us', show_breadcrumbs: true %}
+
+{% schema %}
+{
+  "name": "RP Founder note",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "founder_image",
+      "label": "Founder image"
+    },
+    {
+      "type": "image_picker",
+      "id": "signature_image",
+      "label": "Signature image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP Founder note"
+    }
+  ]
+}
+{% endschema %}

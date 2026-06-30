@@ -1,0 +1,210 @@
+.rp-product-main,
+.rp-related-dresses {
+  padding: clamp(2.5rem, 5vw, 5rem) 0;
+}
+
+.rp-product-main__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(21rem, 0.9fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.rp-product-main__media {
+  display: grid;
+  gap: 1rem;
+}
+
+.rp-product-main__media-frame {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: rgba(248, 250, 245, 0.42);
+}
+
+.rp-product-main__media-frame.is-featured {
+  box-shadow: var(--rp-shadow-soft);
+}
+
+.rp-product-main__image,
+.rp-product-main__placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.rp-product-main__info {
+  padding-top: 0.5rem;
+}
+
+.rp-product-main__info.is-sticky {
+  position: sticky;
+  top: calc(var(--rp-header-height) + 1.5rem);
+}
+
+.rp-product-main__vendor {
+  margin: 0 0 0.6rem;
+  color: rgba(33, 28, 24, 0.54);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+}
+
+.rp-product-main__title {
+  margin: 0;
+  font-family: var(--rp-font-display);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.02;
+  font-weight: 400;
+}
+
+.rp-product-main__intro {
+  margin-top: 1.2rem;
+  max-width: 33rem;
+}
+
+.rp-product-main__price-note {
+  margin: 0.45rem 0 0;
+  color: rgba(33, 28, 24, 0.62);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.rp-rental-widget-shell {
+  margin-top: 1.75rem;
+  padding: 1.35rem;
+  border-radius: 1.4rem;
+  background: rgba(248, 250, 245, 0.66);
+  border: 1px solid rgba(33, 28, 24, 0.08);
+}
+
+.rp-rental-widget-shell__copy {
+  margin: 0;
+  color: rgba(33, 28, 24, 0.68);
+}
+
+.rp-rental-widget-shell__body {
+  margin-top: 1rem;
+}
+
+.rp-rental-widget-shell__form {
+  display: grid;
+  gap: 1rem;
+}
+
+.rp-rental-widget-shell__booking-slot {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.rp-rental-widget-shell__app > * {
+  width: 100%;
+}
+
+.rp-rental-widget-shell__placeholder {
+  border: 1px dashed var(--rp-color-border-strong);
+  border-radius: 1rem;
+  padding: 1rem;
+  color: rgba(33, 28, 24, 0.58);
+}
+
+.rp-rental-widget-shell__placeholder--live {
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.rp-rental-widget-shell__controls {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.rp-rental-widget-shell__field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.rp-rental-widget-shell__field span {
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(33, 28, 24, 0.6);
+}
+
+.rp-rental-widget-shell__select {
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(33, 28, 24, 0.12);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--rp-color-charcoal);
+  font: inherit;
+}
+
+.rp-rental-widget-shell__submit {
+  width: 100%;
+  justify-content: center;
+}
+
+.rp-rental-widget-shell__submit[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.rp-rental-widget-shell__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+  font-size: 0.84rem;
+  color: rgba(33, 28, 24, 0.58);
+}
+
+.rp-product-main__microcopy {
+  margin-top: 1.25rem;
+}
+
+.rp-product-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rp-product-badges__item {
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(33, 28, 24, 0.05);
+  color: rgba(33, 28, 24, 0.68);
+  font-size: 0.84rem;
+}
+
+.rp-product-main__shipping-note {
+  margin: 0.9rem 0 0;
+  color: rgba(33, 28, 24, 0.64);
+  font-size: 0.92rem;
+}
+
+.rp-product-main__accordions {
+  margin-top: 1.6rem;
+}
+
+.rp-product-main__editorial {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  max-width: 44rem;
+}
+
+.rp-related-dresses {
+  border-top: 1px solid rgba(33, 28, 24, 0.08);
+}
+
+@media (max-width: 989px) {
+  .rp-product-main__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rp-product-main__info.is-sticky {
+    position: static;
+  }
+}

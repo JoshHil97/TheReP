@@ -1,0 +1,114 @@
+{%- liquid
+  assign featured_product = section.settings.product
+-%}
+
+<section class="rp-featured-dress rp-tone--{{ section.settings.tone }}">
+  <div class="rp-shell">
+    <div class="rp-featured-dress__grid">
+      <div class="rp-featured-dress__media" data-rp-reveal>
+        {%- if featured_product != blank and featured_product.featured_media != blank -%}
+          {{
+            featured_product.featured_media
+            | image_url: width: 1600
+            | image_tag:
+              class: 'rp-featured-dress__image',
+              loading: 'lazy',
+              widths: '720, 960, 1200, 1600',
+              alt: featured_product.title
+          }}
+        {%- else -%}
+          <img class='rp-featured-dress__image rp-featured-dress__image--fallback' src="{{ 'rp-model-olive.jpg' | asset_url }}" alt="Olive Sculpted Couture Dress on model" width="1120" height="1400" loading="lazy">
+        {%- endif -%}
+      </div>
+
+      <div class="rp-featured-dress__content" data-rp-reveal>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="rp-section-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="rp-section-heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if featured_product != blank -%}
+          <p class="rp-featured-dress__product-title">{{ featured_product.title }}</p>
+          {% render 'rp-price-per-day', product: featured_product %}
+        {%- else -%}
+          <p class="rp-featured-dress__product-title">Fuchsia Satin Halter Maxi Dress</p>
+          <div class="rp-price-per-day"><span class="rp-price-per-day__amount">£25</span><span class="rp-price-per-day__suffix">per day</span></div>
+        {%- endif -%}
+
+        {%- if section.settings.copy != blank -%}
+          <div class="rp-featured-dress__copy rte">{{ section.settings.copy }}</div>
+        {%- endif -%}
+
+        {%- if featured_product != blank -%}
+          <a class="rp-button rp-button--solid" href="{{ featured_product.url }}">
+            {{ section.settings.cta_label | default: 'Rent now' }}
+          </a>
+        {%- else -%}
+          <a class="rp-button rp-button--solid" href="/collections/all">
+            {{ section.settings.cta_label | default: 'Rent now' }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RP Featured dress",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Featured product"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Featured rental"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A softer take on event dressing."
+    },
+    {
+      "type": "richtext",
+      "id": "copy",
+      "label": "Copy",
+      "default": "<p>Spotlight one hero style with editorial imagery, refined copy, and a clear path into the rental flow.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Rent now"
+    },
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Tone",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        }
+      ],
+      "default": "sand"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP Featured dress"
+    }
+  ]
+}
+{% endschema %}

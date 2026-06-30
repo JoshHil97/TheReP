@@ -1,0 +1,71 @@
+<section class="rp-testimonials">
+  <div class="rp-shell">
+    <div class="rp-section-head" data-rp-reveal>
+      {%- if section.settings.heading != blank -%}
+        <h2 class="rp-section-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+
+    <div class="rp-testimonials__grid">
+      {%- for block in section.blocks -%}
+        <blockquote class="rp-testimonials__card" data-rp-reveal {{ block.shopify_attributes }}>
+          <p class="rp-testimonials__quote">“{{ block.settings.quote }}”</p>
+          {%- if block.settings.author != blank -%}
+            <cite class="rp-testimonials__author">{{ block.settings.author }}</cite>
+          {%- endif -%}
+        </blockquote>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RP Testimonials",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Words from our customers"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "The whole experience felt seamless, thoughtful, and genuinely luxurious from start to return."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Aaliyah, London"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

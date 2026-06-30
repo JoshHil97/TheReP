@@ -1,0 +1,241 @@
+{
+  "sections": {
+    "home_hero": {
+      "type": "rp-home-hero",
+      "settings": {
+        "eyebrow": "Luxury dress rental",
+        "heading": "Dress for the moment.",
+        "copy": "<p>Curated luxury rental for every invitation, with statement silhouettes styled on the body and cleaner product views when it is time to choose.</p>",
+        "primary_label": "Shop the collection",
+        "primary_link": "/collections/all",
+        "secondary_label": "How it works",
+        "secondary_link": "/pages/how-it-works",
+        "use_bundled_video": true,
+        "video_label": "The Re:P Club in motion",
+        "video_heading": "Arrive in the dress, return with ease.",
+        "video_copy": "<p>A glimpse of the rental ritual: statement colour, considered styling, and pieces prepared for their next moment.</p>",
+        "portrait_label": "Editorial still",
+        "note_label": "Why this converts",
+        "note_heading": "Desire on the homepage. Clarity once they start shopping.",
+        "note_copy": "<p>The landing experience stays aspirational, then the collection and product templates switch to calmer framing so customers can compare dresses quickly.</p>",
+        "content_alignment": "center-left",
+        "overlay_opacity": 0,
+        "height": "medium"
+      }
+    },
+    "featured_dress": {
+      "type": "rp-featured-dress",
+      "settings": {
+        "eyebrow": "Editorial still",
+        "heading": "Best dressed.",
+        "copy": "<p>Homepage imagery stays editorial and expressive, while product pages stay clean and clear with ghost mannequin views for easy comparison.</p>",
+        "cta_label": "Rent now",
+        "tone": "sand"
+      }
+    },
+    "how_it_works": {
+      "type": "rp-how-it-works",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Choose your dress",
+            "copy": "Browse the curated edit and pick the style that fits the occasion."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Select your dates",
+            "copy": "Book your rental window on the product page with confidence."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Wear and return",
+            "copy": "Your order arrives ready to wear and goes back with a prepaid return label."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3"
+      ],
+      "settings": {
+        "heading": "Luxury rental, made simple.",
+        "tone": "light"
+      }
+    },
+    "trust_strip": {
+      "type": "rp-trust-strip",
+      "blocks": {
+        "trust_1": {
+          "type": "item",
+          "settings": {
+            "icon": "sparkle",
+            "title": "Professionally cleaned",
+            "copy": "Prepared to luxury care standards before every dispatch."
+          }
+        },
+        "trust_2": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "Prepaid returns",
+            "copy": "An easy return flow with Royal Mail included in the order."
+          }
+        },
+        "trust_3": {
+          "type": "item",
+          "settings": {
+            "icon": "star",
+            "title": "Curated luxury pieces",
+            "copy": "A refined edit selected for fit, condition and impact."
+          }
+        }
+      },
+      "block_order": [
+        "trust_1",
+        "trust_2",
+        "trust_3"
+      ],
+      "settings": {
+        "tone": "light"
+      }
+    },
+    "editorial_cards": {
+      "type": "rp-editorial-cards",
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "title": "Fuchsia satin",
+            "copy": "A sleek halter silhouette for evening events, birthdays and statement arrivals.",
+            "link_label": "Rent now",
+            "link": "/collections/all"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "title": "Midnight navy",
+            "copy": "Volume, drama and rich colour for black tie dressing and standout entrances.",
+            "link_label": "Rent now",
+            "link": "/collections/all"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "title": "Olive couture",
+            "copy": "A sculpted occasion piece for statement arrivals, gallery moments, and high-impact event dressing.",
+            "link_label": "Rent now",
+            "link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3"
+      ],
+      "settings": {
+        "subheading": "Styled on the body",
+        "heading": "Shop the edit."
+      }
+    },
+    "featured_rentals": {
+      "type": "rp-featured-rentals",
+      "settings": {
+        "heading": "See the silhouette first.",
+        "copy": "<p>Start with the clean ghost view, then open each dress to see the normal imagery styled on the body.</p>",
+        "collection": "all",
+        "products_to_show": 3,
+        "cta_label": "Rent now",
+        "cta_link": "/collections/all"
+      }
+    },
+    "testimonials": {
+      "type": "rp-testimonials",
+      "blocks": {
+        "quote_1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The whole experience felt polished from delivery to return, and the dress looked incredible in person.",
+            "author": "Yasmin, London"
+          }
+        },
+        "quote_2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The site made it easy to compare silhouettes quickly, then the rental process felt genuinely simple.",
+            "author": "Sophie, Manchester"
+          }
+        },
+        "quote_3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "It gave boutique energy without the friction. The prepaid return flow made the whole thing stress-free.",
+            "author": "Amara, Birmingham"
+          }
+        }
+      },
+      "block_order": [
+        "quote_1",
+        "quote_2",
+        "quote_3"
+      ],
+      "settings": {
+        "heading": "A rental experience that still feels elevated."
+      }
+    },
+    "faq_preview": {
+      "type": "rp-faq-preview",
+      "blocks": {
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "What happens if the dress doesn’t fit?",
+            "answer": "<p>Contact us as soon as possible and we’ll do our best to help. Depending on timing and availability, we may be able to advise on an exchange or the best next step.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "How do returns work?",
+            "answer": "<p>Every order includes a prepaid return label. Once your event is over, repack the dress and send it back within the agreed rental window.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "Are the dresses professionally cleaned?",
+            "answer": "<p>Yes. Every piece is professionally cleaned and quality checked before dispatch so it arrives ready to wear.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3"
+      ],
+      "settings": {
+        "heading": "Questions, answered.",
+        "cta_label": "View all FAQs",
+        "cta_link": "/pages/faqs"
+      }
+    }
+  },
+  "order": [
+    "home_hero",
+    "editorial_cards",
+    "featured_dress",
+    "how_it_works",
+    "trust_strip",
+    "featured_rentals",
+    "testimonials",
+    "faq_preview"
+  ]
+}

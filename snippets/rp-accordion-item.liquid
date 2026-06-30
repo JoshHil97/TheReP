@@ -1,0 +1,15 @@
+{%- liquid
+  assign accordion_id = id | default: title | handle
+-%}
+
+<details class="rp-accordion" id="{{ accordion_id }}" {% if open %}open{% endif %} data-rp-accordion>
+  <summary class="rp-accordion__summary" aria-expanded="{% if open %}true{% else %}false{% endif %}">
+    <span>{{ title }}</span>
+    <span class="rp-accordion__summary-icon">
+      {% render 'rp-icon-chevron' %}
+    </span>
+  </summary>
+  <div class="rp-accordion__content rte">
+    {{ content }}
+  </div>
+</details>

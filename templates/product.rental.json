@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product-rental",
+      "settings": {
+        "show_vendor": false,
+        "show_intro": true,
+        "enable_sticky_info": true,
+        "tone": "light"
+      }
+    },
+    "related": {
+      "type": "rp-related-dresses",
+      "settings": {
+        "heading": "Related dresses",
+        "products_to_show": 3
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related"
+  ]
+}

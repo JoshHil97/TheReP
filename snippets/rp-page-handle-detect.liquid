@@ -1,0 +1,20 @@
+{%- liquid
+  assign raw_source = source | default: page_handle | default: page_title
+  assign normalized = raw_source | handleize
+
+  if normalized contains 'about'
+    echo 'about'
+  elsif normalized == 'faq' or normalized == 'faqs' or normalized contains 'questions'
+    echo 'faq'
+  elsif normalized contains 'terms' or normalized contains 'conditions' or normalized contains 'agreement'
+    echo 'terms'
+  elsif normalized contains 'delivery' or normalized contains 'return'
+    echo 'delivery'
+  elsif normalized contains 'how-it-works' or normalized == 'how-it-works'
+    echo 'how-it-works'
+  elsif normalized contains 'sizing' or normalized contains 'size-guide'
+    echo 'sizing'
+  else
+    echo 'generic'
+  endif
+-%}

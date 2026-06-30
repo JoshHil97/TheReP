@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection-rental",
+      "settings": {
+        "show_collection_image": false,
+        "products_per_page": 12,
+        "tone": "light"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

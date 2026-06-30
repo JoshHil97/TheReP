@@ -1,0 +1,87 @@
+<section class="rp-page-main rp-page-main--about">
+  <div class="rp-shell">
+    {%- if show_breadcrumbs -%}
+      {% render 'rp-page-breadcrumbs', title: title %}
+    {%- endif -%}
+
+    <div class="rp-page-main__hero-media" data-rp-reveal>
+      {% render 'rp-founder-photo',
+        image: section.settings.founder_image,
+        class_name: 'rp-page-main__feature-image rp-page-main__feature-image--collage',
+        alt: 'Founder photo collage'
+      %}
+    </div>
+
+    <div class="rp-page-main__founder-note" data-rp-reveal>
+      <p class="rp-section-eyebrow">About us</p>
+      <h1 class="rp-section-heading">A note from our founder</h1>
+
+      <div class="rp-page-main__founder-copy rte">
+        <p>
+          Between trying on outfits for fun, turning the hallway into a catwalk, and having a mum who always made sure I was the best dressed,
+          The Re:P Club was built for people who love fashion and want standout, high quality occasion wear without having to break the bank for
+          something you&rsquo;ll only wear once.
+        </p>
+        <p>
+          This platform is dedicated to sourcing premium pieces you can rent with confidence, while simplifying the experience of dressing for
+          every celebration of love.
+        </p>
+        <p>
+          From timeless classics to statement styles, I really do hope to make you feel confident, comfortable, and beautifully yourself every
+          step of the way.
+        </p>
+      </div>
+
+      <div class="rp-page-main__signoff">
+        <div class="rp-page-main__signature-stack">
+          <img
+            class="rp-page-main__signature-xo"
+            src="{{ 'rp-signature-xo.png' | asset_url }}"
+            alt="xo signature"
+            width="664"
+            height="376"
+            loading="lazy"
+          >
+          {%- if section.settings.signature_image != blank -%}
+            {{
+              section.settings.signature_image
+              | image_url: width: 1200
+              | image_tag:
+                class: 'rp-page-main__signature-image',
+                loading: 'lazy',
+                widths: '320, 520, 760, 1200',
+                alt: 'Founder signature'
+            }}
+          {%- else -%}
+            <img
+              class="rp-page-main__signature-image"
+              src="{{ 'rp-signature-kind.png' | asset_url }}"
+              alt="Founder signature"
+              width="1019"
+              height="245"
+              loading="lazy"
+            >
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="rp-page-main__feature-grid rp-page-main__feature-grid--single">
+      <div class="rp-page-main__feature-card" data-rp-reveal>
+        <p class="rp-page-main__card-label">Why The Re:P Club exists</p>
+        <h2>Luxury occasionwear, without the one-wear guilt.</h2>
+        <p class="rp-page-main__card-copy">
+          We curate premium dresses that feel special, photograph beautifully, and arrive with a rental process that is straightforward from
+          booking through return.
+        </p>
+        <p class="rp-page-main__card-copy">
+          The goal is simple: fewer stressful outfit searches, more memorable event dressing, and pieces that make you feel like yourself on
+          your best day.
+        </p>
+        {%- if page != blank and page.content != blank -%}
+          <div class="rp-page-main__feature-extra rte">{{ page.content }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>

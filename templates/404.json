@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-404",
+      "settings": {
+        "eyebrow": "Page not found",
+        "heading": "This page is no longer here.",
+        "copy": "<p>Return to the collection to browse available dresses, or head back home to continue exploring The Re:P Club.</p>",
+        "primary_label": "Browse dresses",
+        "primary_link": "/collections/all",
+        "secondary_label": "Back home",
+        "secondary_link": "/"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

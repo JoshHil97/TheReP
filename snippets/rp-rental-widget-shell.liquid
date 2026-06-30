@@ -1,0 +1,84 @@
+{%- liquid
+  assign current_variant = selected_variant | default: product.selected_or_first_available_variant
+  assign selector_label = 'Choose your size'
+  assign product_form_id = 'rp-product-form-' | append: section_id
+
+  if product.options_with_values.size > 0 and product.options_with_values.first.name != blank
+    assign selector_label = product.options_with_values.first.name
+  endif
+-%}
+
+<div class="rp-rental-widget-shell" data-rp-widget-shell>
+  <div class="rp-rental-widget-shell__intro">
+    <p class="rp-rental-widget-shell__eyebrow">Book your rental</p>
+    <p class="rp-rental-widget-shell__copy">
+      Select your dates, choose your size, and add the dress to your bag. Delivery and returns are handled around your booking window so the experience stays simple from arrival to send-back.
+    </p>
+  </div>
+
+  {%- form 'product',
+    product,
+    id: product_form_id,
+    class: 'rp-rental-widget-shell__form product-form',
+    novalidate: 'novalidate'
+  -%}
+    {%- if product.has_only_default_variant -%}
+      <input type="hidden" name="id" value="{{ current_variant.id }}">
+    {%- endif -%}
+    <input type="hidden" name="quantity" value="1">
+
+    <div class="rp-rental-widget-shell__body">
+      <div class="rp-rental-widget-shell__booking-slot" data-rp-booking-slot>
+        {%- if has_app_block -%}
+          {{ app_markup }}
+        {%- elsif request.design_mode -%}
+          <div class="rp-rental-widget-shell__placeholder">
+            <p>Add your booking app block inside this product section in the theme editor.</p>
+          </div>
+        {%- else -%}
+          <div class="rp-rental-widget-shell__placeholder rp-rental-widget-shell__placeholder--live">
+            <p>Your booking calendar loads in this area when the app attaches to the product form.</p>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="rp-rental-widget-shell__controls">
+        {%- unless product.has_only_default_variant -%}
+          <label class="rp-rental-widget-shell__field" for="rp-variant-select-{{ section_id }}">
+            <span>{{ selector_label }}</span>
+            <select id="rp-variant-select-{{ section_id }}" name="id" class="rp-rental-widget-shell__select">
+              {%- for variant in product.variants -%}
+                <option
+                  value="{{ variant.id }}"
+                  {% if current_variant.id == variant.id %}selected{% endif %}
+                  {% unless variant.available %}disabled{% endunless %}
+                >
+                  {{ variant.title }}{% unless variant.available %} — Sold out{% endunless %}
+                </option>
+              {%- endfor -%}
+            </select>
+          </label>
+        {%- endunless -%}
+
+        <button
+          class="rp-button rp-button--solid rp-rental-widget-shell__submit"
+          type="submit"
+          name="add"
+          {% if current_variant == blank or current_variant.available == false %}disabled{% endif %}
+        >
+          {% if current_variant == blank or current_variant.available == false %}
+            Sold out
+          {% else %}
+            Add booking to bag
+          {% endif %}
+        </button>
+      </div>
+    </div>
+  {%- endform -%}
+
+  <div class="rp-rental-widget-shell__meta">
+    <span>Royal Mail tracked</span>
+    <span>Prepaid return included</span>
+    <span>Booking-window protected</span>
+  </div>
+</div>

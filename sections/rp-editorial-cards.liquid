@@ -1,0 +1,147 @@
+<section class="rp-editorial-cards">
+  <div class="rp-shell">
+    <div class="rp-section-head rp-section-head--split" data-rp-reveal>
+      <div>
+        {%- if section.settings.subheading != blank -%}
+          <p class="rp-section-eyebrow">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="rp-section-heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      </div>
+
+      <div class="rp-editorial-cards__actions">
+        <div class="rp-editorial-cards__meta">
+          <p class="rp-editorial-cards__prompt">Swipe through the looks</p>
+          <p class="rp-editorial-cards__counter" aria-live="polite">
+            <span data-rp-carousel-current>01</span>
+            <span aria-hidden="true">/</span>
+            <span data-rp-carousel-total>{{ section.blocks.size | prepend: '0' }}</span>
+          </p>
+        </div>
+
+        <div class="rp-editorial-cards__controls" aria-label="Carousel controls">
+          <button class="rp-editorial-cards__control" type="button" data-rp-carousel-prev aria-label="Previous look">
+            <span aria-hidden="true">&larr;</span>
+          </button>
+          <button class="rp-editorial-cards__control" type="button" data-rp-carousel-next aria-label="Next look">
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rp-editorial-cards__viewport" data-rp-carousel tabindex="0" aria-label="{{ section.settings.heading | escape }}">
+      <div class="rp-editorial-cards__track" data-rp-carousel-track>
+        {%- for block in section.blocks -%}
+          <article class="rp-editorial-cards__card{% if forloop.first %} is-active{% endif %}" data-rp-carousel-slide data-rp-reveal aria-label="Look {{ forloop.index }} of {{ section.blocks.size }}" {{ block.shopify_attributes }}>
+            <div class="rp-editorial-cards__media">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 1400
+                  | image_tag:
+                    class: 'rp-editorial-cards__image',
+                    loading: 'lazy',
+                    widths: '420, 720, 960, 1200, 1400',
+                    alt: block.settings.title
+                }}
+              {%- else -%}
+                {%- liquid
+                  assign fallback_image = 'rp-dress-fuchsia-ghost.png'
+                  if forloop.index == 2
+                    assign fallback_image = 'rp-model-midnight.jpg'
+                  elsif forloop.index == 3
+                    assign fallback_image = 'rp-model-olive.jpg'
+                  endif
+                -%}
+                <img class='rp-editorial-cards__image rp-editorial-cards__image--fallback' src="{{ fallback_image | asset_url }}" alt="{{ block.settings.title | default: 'The Re:P Club' }}" width="1200" height="1800" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="rp-editorial-cards__content">
+              <p class="rp-editorial-cards__slide-label">Look {{ forloop.index | prepend: '0' }}</p>
+              <h3 class="rp-editorial-cards__title">{{ block.settings.title }}</h3>
+              <p class="rp-editorial-cards__copy">{{ block.settings.copy }}</p>
+              {%- if block.settings.link_label != blank and block.settings.link != blank -%}
+                <a class="rp-button rp-button--solid" href="{{ block.settings.link }}">{{ block.settings.link_label }}</a>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RP Editorial cards",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Eyebrow",
+      "default": "Styled on the body"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop the edit."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Wedding Guest"
+        },
+        {
+          "type": "textarea",
+          "id": "copy",
+          "label": "Copy",
+          "default": "Elegant silhouettes for long lunches, late dancing, and the perfect photo moment."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Rent now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP Editorial cards",
+      "blocks": [
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

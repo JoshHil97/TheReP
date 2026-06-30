@@ -1,0 +1,20 @@
+{%- if image != blank -%}
+  {{
+    image
+    | image_url: width: 1800
+    | image_tag:
+      class: class_name,
+      loading: 'lazy',
+      widths: '420, 720, 960, 1400, 1800',
+      alt: alt
+  }}
+{%- else -%}
+  <img
+    class="{{ class_name }}"
+    src="{{ 'rp-founder-photo.jpeg' | asset_url }}"
+    alt="{{ alt }}"
+    width="2048"
+    height="777"
+    loading="lazy"
+  >
+{%- endif -%}

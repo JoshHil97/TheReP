@@ -1,0 +1,27 @@
+<section class="rp-page-main">
+  <div class="rp-shell">
+    {%- if show_breadcrumbs -%}
+      {% render 'rp-page-breadcrumbs', title: title %}
+    {%- endif -%}
+
+    <div class="rp-page-main__grid">
+      <div class="rp-page-main__content" data-rp-reveal>
+        <p class="rp-section-eyebrow">Delivery &amp; returns</p>
+        <h1 class="rp-section-heading">Tracked in, easy back out.</h1>
+        <div class="rp-page-main__body rte">
+          <p>Your dress is sent using tracked Royal Mail delivery and timed around your booking window so it arrives ready for the moment.</p>
+          <p>On your return date, package the dress back into the same box, take your parcel and QR code to your local post office, and let the team do the rest.</p>
+          <p>The item must be fully packed and dropped by 12pm on the return date stated in your confirmation email. Late returns may incur additional charges.</p>
+          {%- if page != blank and page.content != blank -%}
+            {{ page.content }}
+          {%- endif -%}
+        </div>
+      </div>
+      <aside class="rp-page-main__aside" data-rp-reveal>
+        <div class="rp-page-main__card"><p class="rp-page-main__card-label">Delivery</p><p class="rp-page-main__card-copy">Tracked Royal Mail service, timed to your booking window.</p></div>
+        <div class="rp-page-main__card"><p class="rp-page-main__card-label">Returns</p><p class="rp-page-main__card-copy">Prepaid return process with QR drop-off at your local post office.</p></div>
+        <div class="rp-page-main__card"><p class="rp-page-main__card-label">Deadline</p><p class="rp-page-main__card-copy">Please post the item back by 12pm on your stated return date.</p></div>
+      </aside>
+    </div>
+  </div>
+</section>

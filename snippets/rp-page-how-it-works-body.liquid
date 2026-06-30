@@ -1,0 +1,32 @@
+<section class="rp-page-main">
+  <div class="rp-shell">
+    {%- if show_breadcrumbs -%}
+      {% render 'rp-page-breadcrumbs', title: title %}
+    {%- endif -%}
+
+    <div class="rp-page-main__grid">
+      <div class="rp-page-main__content" data-rp-reveal>
+        <p class="rp-section-eyebrow">How it works</p>
+        <h1 class="rp-section-heading">Book it, wear it, return it.</h1>
+        <div class="rp-page-main__body rte">
+          <h2>1. Choose your dress</h2>
+          <p>Browse the collection and pick the piece that feels right for your event.</p>
+          <h2>2. Select your dates</h2>
+          <p>Your booking app confirms availability and protects the turnaround between rentals.</p>
+          <h2>3. Receive and wear</h2>
+          <p>Your dress arrives tracked and ready for the occasion.</p>
+          <h2>4. Send it back</h2>
+          <p>Use the prepaid return process and drop it off on the stated return date.</p>
+          {%- if page != blank and page.content != blank -%}
+            {{ page.content }}
+          {%- endif -%}
+        </div>
+      </div>
+      <aside class="rp-page-main__aside" data-rp-reveal>
+        <div class="rp-page-main__card"><p class="rp-page-main__card-label">Booking</p><p class="rp-page-main__card-copy">Availability and timing are confirmed inside the booking flow.</p></div>
+        <div class="rp-page-main__card"><p class="rp-page-main__card-label">Arrival</p><p class="rp-page-main__card-copy">Tracked delivery keeps the timeline clear from dispatch to doorstep.</p></div>
+        <div class="rp-page-main__card"><p class="rp-page-main__card-label">Return</p><p class="rp-page-main__card-copy">Prepaid returns make the send-back part straightforward too.</p></div>
+      </aside>
+    </div>
+  </div>
+</section>

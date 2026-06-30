@@ -1,0 +1,19 @@
+{%- liquid
+  assign price_metafield = product.metafields.custom.price_per_day
+  assign price_display = product.price | money_without_trailing_zeros
+
+  if price_metafield != blank
+    if price_metafield.type contains 'money'
+      assign price_display = price_metafield.value | money_without_trailing_zeros
+    else
+      assign raw_price = price_metafield.value | default: price_metafield
+      assign price_display = raw_price | times: 100 | money_without_trailing_zeros
+    endif
+  endif
+-%}
+
+<div class="rp-price-per-day">
+  <span class="rp-price-per-day__prefix">From</span>
+  <span class="rp-price-per-day__amount">{{ price_display }}</span>
+  <span class="rp-price-per-day__suffix">daily rate</span>
+</div>

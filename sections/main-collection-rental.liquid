@@ -1,0 +1,273 @@
+{%- liquid
+  assign collection_intro = collection.description
+  assign active_filter_count = 0
+
+  if collection_intro == blank
+    assign collection_intro = '<p>Browse the edit through cleaner product views so it is easier to compare shape, colour and detail before choosing your rental window.</p>'
+  endif
+
+  for filter in collection.filters
+    assign active_filter_count = active_filter_count | plus: filter.active_values.size
+
+    if filter.type == 'price_range'
+      if filter.min_value.value != blank or filter.max_value.value != blank
+        assign active_filter_count = active_filter_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
+
+{%- paginate collection.products by section.settings.products_per_page -%}
+  <section
+    class="rp-collection-main rp-tone--{{ section.settings.tone }}"
+    data-rp-collection-root
+    data-rp-collection-key="{{ collection.handle | default: 'all' }}"
+    data-rp-collection-url="{{ collection.url }}"
+  >
+    <div class="rp-shell rp-shell--wide">
+      <nav class="rp-breadcrumbs" aria-label="Breadcrumb" data-rp-reveal>
+        <a href="/">Home</a>
+        <span>/</span>
+        <span aria-current="page">{% if collection.title == blank or collection.title == "Products" or collection.title == "All" %}The Collection{% else %}{{ collection.title }}{% endif %}</span>
+      </nav>
+
+      <header class="rp-collection-main__header" data-rp-reveal>
+        <div class="rp-collection-main__header-copy">
+          <p class="rp-section-eyebrow">Dress rental collection</p>
+          <h1 class="rp-section-heading">{% if collection.title == blank or collection.title == "Products" or collection.title == "All" %}The Collection{% else %}{{ collection.title }}{% endif %}</h1>
+          <div class="rp-section-copy rte">{{ collection_intro }}</div>
+          <div class="rp-collection-main__meta">
+            <span>{{ paginate.items }} styles</span>
+            <span>Royal Mail tracked</span>
+            <span>Prepaid return included</span>
+          </div>
+        </div>
+        {%- if section.settings.show_collection_image and collection.image != blank -%}
+          <div class="rp-collection-main__header-media">
+            {{
+              collection.image
+              | image_url: width: 1200
+              | image_tag:
+                class: 'rp-collection-main__header-image',
+                loading: 'lazy',
+                widths: '420, 720, 960, 1200',
+                alt: collection.title
+            }}
+          </div>
+        {%- else -%}
+          <div class="rp-collection-main__header-note">
+            <p class="rp-collection-main__header-note-label">Browse with clarity</p>
+            <p class="rp-collection-main__header-note-title">A calmer way to compare silhouettes, colour and detail.</p>
+            <p class="rp-collection-main__header-note-copy">This page should feel lighter and easier to scan, with cleaner product framing that makes choosing a dress faster.</p>
+          </div>
+        {%- endif -%}
+      </header>
+
+      <div class="rp-collection-main__toolbar" data-rp-reveal>
+        <div class="rp-collection-main__toolbar-copy">
+          <p class="rp-collection-main__toolbar-title">Refine the edit</p>
+          <p
+            class="rp-collection-main__toolbar-meta"
+            data-rp-collection-status
+            data-default-status="{%- if active_filter_count > 0 -%}{{ active_filter_count }} filters active{%- else -%}Ghost mannequin views make side-by-side comparison easier.{%- endif -%}"
+          >
+            {%- if active_filter_count > 0 -%}
+              {{ active_filter_count }} filters active
+            {%- else -%}
+              Ghost mannequin views make side-by-side comparison easier.
+            {%- endif -%}
+          </p>
+
+          <label class="rp-collection-main__search">
+            <span class="visually-hidden">Search the collection</span>
+            <input
+              type="search"
+              name="q"
+              value=""
+              placeholder="Search the edit"
+              autocomplete="off"
+              spellcheck="false"
+              data-rp-collection-search
+            >
+          </label>
+        </div>
+
+        <button class="rp-collection-main__filters-toggle" type="button" data-rp-filter-toggle>
+          Filters
+        </button>
+
+        <form class="rp-collection-main__sort" method="get" data-rp-collection-sort-form>
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
+            {%- endfor -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value != blank -%}
+                <input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}">
+              {%- endif -%}
+              {%- if filter.max_value.value != blank -%}
+                <input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}">
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          <label class="visually-hidden" for="SortBy">Sort by</label>
+          <select id="SortBy" name="sort_by" onchange="this.form.submit()">
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {%- endfor -%}
+          </select>
+        </form>
+      </div>
+
+      <button class="rp-collection-main__filters-overlay" type="button" data-rp-filter-close aria-label="Close filters"></button>
+
+      <div class="rp-collection-main__layout">
+        <aside class="rp-collection-main__filters" data-rp-filter-panel>
+          <div class="rp-collection-main__filters-header">
+            <p>Refine the edit</p>
+            <button class="rp-collection-main__filters-close" type="button" data-rp-filter-close>Close</button>
+          </div>
+
+          <form id="CollectionFiltersForm" class="rp-collection-main__filters-form" method="get" data-rp-collection-filters-form>
+            <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+            {%- for filter in collection.filters -%}
+              <details class="rp-filter-group" open>
+                <summary class="rp-filter-group__summary">
+                  <span>{{ filter.label }}</span>
+                  {% render 'rp-icon-chevron' %}
+                </summary>
+
+                <div class="rp-filter-group__content">
+                  {%- case filter.type -%}
+                    {%- when 'boolean', 'list' -%}
+                      <ul class="rp-filter-group__list" role="list">
+                        {%- for filter_value in filter.values -%}
+                          <li>
+                            <label class="rp-filter-group__label">
+                              <input
+                                type="checkbox"
+                                name="{{ filter_value.param_name }}"
+                                value="{{ filter_value.value }}"
+                                {% if filter_value.active %}checked{% endif %}
+                                {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}
+                              >
+                              <span>{{ filter_value.label }}</span>
+                              <span class="rp-filter-group__count">{{ filter_value.count }}</span>
+                            </label>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- when 'price_range' -%}
+                      <div class="rp-filter-group__price-range">
+                        <label>
+                          <span>Min</span>
+                          <input
+                            type="number"
+                            name="{{ filter.min_value.param_name }}"
+                            min="0"
+                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                            value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                            placeholder="0"
+                          >
+                        </label>
+                        <label>
+                          <span>Max</span>
+                          <input
+                            type="number"
+                            name="{{ filter.max_value.param_name }}"
+                            min="0"
+                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                            value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                            placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          >
+                        </label>
+                      </div>
+                  {%- endcase -%}
+                </div>
+              </details>
+            {%- endfor -%}
+
+            <div class="rp-collection-main__filter-actions">
+              <button class="rp-button rp-button--solid" type="submit">Apply</button>
+              <a class="rp-text-link" href="{{ collection.url }}">Clear</a>
+            </div>
+          </form>
+        </aside>
+
+        <div class="rp-collection-main__products" data-rp-collection-products>
+          <div class="rp-product-grid rp-product-grid--collection" data-rp-collection-grid>
+            {%- for product in collection.products -%}
+              {% render 'rp-product-card', product: product %}
+            {%- else -%}
+              <div class="rp-collection-main__empty">
+                <p>No dresses match your filters right now.</p>
+                <a class="rp-text-link" href="{{ collection.url }}">Clear filters</a>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <div class="rp-collection-main__empty rp-collection-main__empty--search" data-rp-search-empty hidden>
+            <p>No dresses match that search right now.</p>
+            <button class="rp-text-link" type="button" data-rp-clear-search>Clear search</button>
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="rp-pagination" role="navigation" aria-label="Pagination" data-rp-collection-pagination>
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}" class="rp-text-link" data-rp-pagination-prev>Previous</a>
+              {%- endif -%}
+
+              <span>Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}" class="rp-text-link" data-rp-pagination-next>Next</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Main collection rental",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "label": "Show collection image",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Tone",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "sand",
+          "label": "Sand"
+        }
+      ],
+      "default": "light"
+    }
+  ]
+}
+{% endschema %}

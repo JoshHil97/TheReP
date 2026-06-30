@@ -1,0 +1,79 @@
+{%- liquid
+  capture page_kind
+    render 'rp-page-handle-detect', source: page.handle, page_title: page.title
+  endcapture
+  assign page_kind = page_kind | strip
+-%}
+
+{%- if page_kind != 'generic' -%}
+  {% render 'rp-page-render', page_kind: page_kind, page: page, section: section, title: page.title, show_breadcrumbs: true %}
+{%- else -%}
+  <section class="rp-page-main">
+    <div class="rp-shell">
+      {% render 'rp-page-breadcrumbs', title: page.title %}
+
+      <div class="rp-page-main__grid">
+        <div class="rp-page-main__content" data-rp-reveal>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="rp-section-eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          <h1 class="rp-section-heading">{{ page.title }}</h1>
+
+          {%- if section.settings.lead != blank -%}
+            <div class="rp-section-copy rte">{{ section.settings.lead }}</div>
+          {%- endif -%}
+
+          <div class="rp-page-main__body rte">
+            {{ page.content }}
+          </div>
+        </div>
+
+        <aside class="rp-page-main__aside" data-rp-reveal>
+          <div class="rp-page-main__card">
+            <p class="rp-page-main__card-label">Delivery</p>
+            <p class="rp-page-main__card-copy">Tracked Royal Mail delivery, prepaid returns, and timing arranged around your booking window.</p>
+          </div>
+          <div class="rp-page-main__card">
+            <p class="rp-page-main__card-label">Care standard</p>
+            <p class="rp-page-main__card-copy">Every piece is professionally cleaned and quality checked before dispatch.</p>
+          </div>
+          <div class="rp-page-main__card">
+            <p class="rp-page-main__card-label">Need help?</p>
+            <p class="rp-page-main__card-copy">Use these pages for sizing notes, delivery guidance, returns, and anything else that helps you rent with confidence.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Main page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The Re:P Club"
+    },
+    {
+      "type": "richtext",
+      "id": "lead",
+      "label": "Lead copy",
+      "default": "<p>Everything you need to rent with confidence, kept clear and easy to navigate.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "founder_image",
+      "label": "Founder image"
+    },
+    {
+      "type": "image_picker",
+      "id": "signature_image",
+      "label": "Signature image"
+    }
+  ]
+}
+{% endschema %}

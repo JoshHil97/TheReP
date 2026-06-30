@@ -1,0 +1,85 @@
+<section class="rp-faq-preview">
+  <div class="rp-shell">
+    <div class="rp-section-head rp-section-head--split" data-rp-reveal>
+      {%- if section.settings.heading != blank -%}
+        <h2 class="rp-section-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+        <a class="rp-text-link" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="rp-faq-preview__list">
+      {%- for block in section.blocks -%}
+        <div {{ block.shopify_attributes }}>
+          {% render 'rp-accordion-item', id: block.id, title: block.settings.question, content: block.settings.answer %}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RP FAQ preview",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently asked"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Link label",
+      "default": "View all FAQs"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How long is the minimum rental period?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>The minimum rental period is three days. Your rental app will confirm the available dates before checkout.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RP FAQ preview",
+      "blocks": [
+        {
+          "type": "faq"
+        },
+        {
+          "type": "faq"
+        },
+        {
+          "type": "faq"
+        },
+        {
+          "type": "faq"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
