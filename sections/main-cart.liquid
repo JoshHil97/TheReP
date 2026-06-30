@@ -45,6 +45,14 @@
                 </a>
 
                 <div class="rp-cart__item-content">
+                  {%- assign visible_property_count = 0 -%}
+                  {%- for property in item.properties -%}
+                    {%- assign property_key_first = property.first | slice: 0 -%}
+                    {%- if property.last != blank and property_key_first != '_' -%}
+                      {%- assign visible_property_count = visible_property_count | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+
                   <div class="rp-cart__item-header">
                     <div>
                       {%- if item.product.vendor != blank -%}
@@ -68,14 +76,6 @@
                       {%- endif -%}
                     </div>
                   </div>
-
-                  {%- assign visible_property_count = 0 -%}
-                  {%- for property in item.properties -%}
-                    {%- assign property_key_first = property.first | slice: 0 -%}
-                    {%- if property.last != blank and property_key_first != '_' -%}
-                      {%- assign visible_property_count = visible_property_count | plus: 1 -%}
-                    {%- endif -%}
-                  {%- endfor -%}
 
                   {%- if visible_property_count > 0 -%}
                     {%- assign has_booking_props = false -%}
