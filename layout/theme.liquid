@@ -236,9 +236,27 @@
     {{ content_for_header }}
 
     {%- comment -%}
-      ── Performance: preconnect to Shopify CDN so asset requests start earlier.
+      ── Performance: resource hints
+      preconnect + dns-prefetch belt-and-suspenders for the Shopify CDN.
+      dns-prefetch covers older browsers that don't act on preconnect.
     {%- endcomment -%}
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.shopify.com">
+
+    {%- comment -%}
+      ── LCP preload: send the browser to fetch the above-the-fold image
+      as early as possible so it doesn't block paint waiting for CSS to resolve.
+      imagesrcset mirrors the widths used in the image_tag below.
+    {%- endcomment -%}
+    {%- if template.name == 'product' and product.featured_image != blank -%}
+      <link
+        rel="preload"
+        as="image"
+        href="{{ product.featured_image | image_url: width: 1200 }}"
+        imagesrcset="{{ product.featured_image | image_url: width: 720 }} 720w, {{ product.featured_image | image_url: width: 1200 }} 1200w, {{ product.featured_image | image_url: width: 1800 }} 1800w"
+        imagesizes="(min-width: 990px) 50vw, 100vw"
+      >
+    {%- endif -%}
 
     {%- comment -%}
       ── Fonts
@@ -251,15 +269,31 @@
     {%- endcomment -%}
 
     {{ 'rp-base.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'rp-sections.css' | asset_url | stylesheet_tag }}
+    {{ 'rp-sections.css' | asset_url | stylesheet_tag: preload: true }}
     {%- if request.page_type == 'product' -%}
-      {{ 'rp-product.css' | asset_url | stylesheet_tag }}
+      {{ 'rp-product.css' | asset_url | stylesheet_tag: preload: true }}
     {%- endif -%}
     {%- if request.page_type == 'collection' or request.page_type == 'index' or request.page_type == 'search' or request.page_type == 'product' -%}
-      {{ 'rp-collection.css' | asset_url | stylesheet_tag }}
+      {{ 'rp-collection.css' | asset_url | stylesheet_tag: preload: true }}
     {%- endif -%}
-    {{ 'rp-premium.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'rp-interactions.js' | asset_url }}" defer="defer"></script>
+
+    {%- comment -%}
+      rp-premium.css contains visual enhancements (body gradient, floating header,
+      hover states). rp-base.css already covers the critical above-fold baseline
+      so loading premium async avoids an extra render-blocking request.
+      The noscript fallback ensures it loads for browsers without JS.
+    {%- endcomment -%}
+    {%- assign rp_premium_url = 'rp-premium.css' | asset_url -%}
+    <link rel="preload" href="{{ rp_premium_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ rp_premium_url }}"></noscript>
+
+    {%- comment -%}
+      Preload the interaction script so the browser fetches it in parallel
+      with CSS. The defer attribute still delays execution until DOM is ready.
+    {%- endcomment -%}
+    {%- assign rp_js_url = 'rp-interactions.js' | asset_url -%}
+    <link rel="preload" href="{{ rp_js_url }}" as="script">
+    <script src="{{ rp_js_url }}" defer="defer"></script>
   </head>
 
   <body class="rp-body template-{{ template.name | handle }} template-suffix-{{ template.suffix | default: 'default' | handle }}">

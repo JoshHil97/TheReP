@@ -46,6 +46,7 @@
             | image_tag:
               class: 'rp-home-hero__film-image',
               loading: 'eager',
+              fetchpriority: 'high',
               widths: '900, 1200, 1600, 2200',
               alt: section.settings.video_heading | default: section.settings.heading
           }}
@@ -57,11 +58,12 @@
             | image_tag:
               class: 'rp-home-hero__film-image',
               loading: 'eager',
+              fetchpriority: 'high',
               widths: '900, 1200, 1600, 2200',
               alt: section.settings.video_heading | default: section.settings.heading
           }}
         {%- else -%}
-          <img class="rp-home-hero__film-image rp-home-hero__film-image--fallback" src="{{ 'rp-model-midnight.jpg' | asset_url }}" alt="Campaign film placeholder for The Re:P Club" width="1600" height="1000" loading="eager">
+          <img class="rp-home-hero__film-image rp-home-hero__film-image--fallback" src="{{ 'rp-model-midnight.jpg' | asset_url }}" alt="Campaign film placeholder for The Re:P Club" width="1600" height="1000" loading="eager" fetchpriority="high">
         {%- endif -%}
       </div>
 
@@ -145,12 +147,13 @@
                   | image_tag:
                     class: 'rp-home-hero__image',
                     loading: 'eager',
+                    fetchpriority: 'high',
                     widths: '900, 1200, 1600, 2200',
                     alt: section.settings.heading
                 }}
               </picture>
             {%- else -%}
-              <img class="rp-home-hero__image rp-home-hero__image--fallback" src="{{ 'rp-home-hero-portrait.jpeg' | asset_url }}" alt="Fuchsia Satin Halter Maxi Dress worn on model" width="1022" height="1536" loading="eager">
+              <img class="rp-home-hero__image rp-home-hero__image--fallback" src="{{ 'rp-home-hero-portrait.jpeg' | asset_url }}" alt="Fuchsia Satin Halter Maxi Dress worn on model" width="1022" height="1536" loading="eager" fetchpriority="high">
             {%- endif -%}
           </div>
         </div>
