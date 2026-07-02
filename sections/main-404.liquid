@@ -1,14 +1,9 @@
 {%- liquid
   assign requested_path = request.path
   assign canonical_path = canonical_url | replace: shop.secure_url, '' | replace: shop.url, '' | split: '?' | first
-  assign pageurl_token = content_for_header | split: '"pageurl":"' | last | split: '"' | first | replace: '\/', '/' | replace: '%20', ' ' | replace: '\u0026', '&'
 
   if canonical_path != blank and canonical_path != '/404'
     assign requested_path = canonical_path
-  endif
-
-  if pageurl_token contains request.host
-    assign requested_path = pageurl_token | split: request.host | last | split: '?' | first
   endif
 
   capture page_kind
