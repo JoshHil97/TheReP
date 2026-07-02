@@ -1,7 +1,13 @@
 {%- liquid
   assign featured_collection = section.settings.collection
+  assign has_featured_products = false
+
+  if featured_collection != blank and featured_collection.products_count > 0
+    assign has_featured_products = true
+  endif
 -%}
 
+{%- if has_featured_products or request.design_mode -%}
 <section class="rp-featured-rentals">
   <div class="rp-shell">
     <div class="rp-section-head rp-section-head--split" data-rp-reveal>
@@ -20,44 +26,21 @@
     </div>
 
     <div class="rp-product-grid rp-product-grid--three">
-      {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
+      {%- if has_featured_products -%}
         {%- for product in featured_collection.products limit: section.settings.products_to_show -%}
           {% render 'rp-product-card', product: product %}
         {%- endfor -%}
-      {%- else -%}
+      {%- elsif request.design_mode -%}
         <article class="rp-product-card is-placeholder">
-          <div class="rp-product-card__media">
-            <img class="rp-product-card__image rp-product-card__placeholder-image" src="{{ 'rp-dress-fuchsia-ghost.png' | asset_url }}" alt="Fuchsia Satin Halter Maxi Dress" width="1200" height="1800" loading="lazy">
-          </div>
           <div class="rp-product-card__content">
-            <h3 class="rp-product-card__title">Fuchsia Satin Halter Maxi Dress</h3>
-            <div class="rp-price-per-day"><span class="rp-price-per-day__amount">£25</span><span class="rp-price-per-day__suffix">per day</span></div>
-          </div>
-        </article>
-
-        <article class="rp-product-card is-placeholder">
-          <div class="rp-product-card__media">
-            <img class="rp-product-card__image rp-product-card__placeholder-image" src="{{ 'rp-dress-midnight-ghost.png' | asset_url }}" alt="Midnight Navy Tulle Ballgown" width="1200" height="1800" loading="lazy">
-          </div>
-          <div class="rp-product-card__content">
-            <h3 class="rp-product-card__title">Midnight Navy Tulle Ballgown</h3>
-            <div class="rp-price-per-day"><span class="rp-price-per-day__amount">£35</span><span class="rp-price-per-day__suffix">per day</span></div>
-          </div>
-        </article>
-
-        <article class="rp-product-card is-placeholder">
-          <div class="rp-product-card__media">
-            <img class="rp-product-card__image rp-product-card__placeholder-image" src="{{ 'rp-dress-olive-ghost.png' | asset_url }}" alt="Olive Sculpted Couture Dress" width="1200" height="1800" loading="lazy">
-          </div>
-          <div class="rp-product-card__content">
-            <h3 class="rp-product-card__title">Olive Sculpted Couture Dress</h3>
-            <div class="rp-price-per-day"><span class="rp-price-per-day__amount">£40</span><span class="rp-price-per-day__suffix">per day</span></div>
+            <h3 class="rp-product-card__title">Select a collection to feature real rentals here.</h3>
           </div>
         </article>
       {%- endif -%}
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
@@ -73,7 +56,7 @@
       "type": "richtext",
       "id": "copy",
       "label": "Copy",
-      "default": "<p>Start with the clean ghost view, then open each dress to see the normal imagery styled on the body.</p>"
+      "default": "<p>Compare silhouette, colour and detail at a glance, then open each dress to choose your rental dates.</p>"
     },
     {
       "type": "collection",

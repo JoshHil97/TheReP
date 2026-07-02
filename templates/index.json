@@ -15,9 +15,9 @@
         "video_heading": "Arrive in the dress, return with ease.",
         "video_copy": "<p>A glimpse of the rental ritual: statement colour, considered styling, and pieces prepared for their next moment.</p>",
         "portrait_label": "Editorial still",
-        "note_label": "Why this converts",
-        "note_heading": "Desire on the homepage. Clarity once they start shopping.",
-        "note_copy": "<p>The landing experience stays aspirational, then the collection and product templates switch to calmer framing so customers can compare dresses quickly.</p>",
+        "note_label": "Rental made simple",
+        "note_heading": "A polished rental from first look to final return.",
+        "note_copy": "<p>Discover the dress with editorial detail, choose your dates with confidence, and return it easily with tracked delivery and prepaid returns.</p>",
         "content_alignment": "center-left",
         "overlay_opacity": 0,
         "height": "medium"
@@ -28,7 +28,7 @@
       "settings": {
         "eyebrow": "Editorial still",
         "heading": "Best dressed.",
-        "copy": "<p>Homepage imagery stays editorial and expressive, while product pages stay clean and clear with ghost mannequin views for easy comparison.</p>",
+        "copy": "<p>Statement silhouettes, refined details, and occasion-ready styling for the moments that deserve something memorable.</p>",
         "cta_label": "Rent now",
         "tone": "sand"
       }
@@ -150,7 +150,7 @@
       "type": "rp-featured-rentals",
       "settings": {
         "heading": "See the silhouette first.",
-        "copy": "<p>Start with the clean ghost view, then open each dress to see the normal imagery styled on the body.</p>",
+        "copy": "<p>Compare silhouette, colour and detail at a glance, then open each dress to choose your rental dates.</p>",
         "collection": "all",
         "products_to_show": 3,
         "cta_label": "Rent now",

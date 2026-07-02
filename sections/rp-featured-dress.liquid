@@ -17,7 +17,7 @@
               alt: featured_product.title
           }}
         {%- else -%}
-          <img class='rp-featured-dress__image rp-featured-dress__image--fallback' src="{{ 'rp-model-olive.jpg' | asset_url }}" alt="Olive Sculpted Couture Dress on model" width="1120" height="1400" loading="lazy">
+          <img class='rp-featured-dress__image rp-featured-dress__image--fallback' src="{{ 'rp-model-olive.jpg' | asset_url }}" alt="Statement occasion dress styled on model" width="1120" height="1400" loading="lazy">
         {%- endif -%}
       </div>
 
@@ -33,8 +33,7 @@
           <p class="rp-featured-dress__product-title">{{ featured_product.title }}</p>
           {% render 'rp-price-per-day', product: featured_product %}
         {%- else -%}
-          <p class="rp-featured-dress__product-title">Fuchsia Satin Halter Maxi Dress</p>
-          <div class="rp-price-per-day"><span class="rp-price-per-day__amount">£25</span><span class="rp-price-per-day__suffix">per day</span></div>
+          <p class="rp-featured-dress__product-title">Occasionwear selected for standout arrivals</p>
         {%- endif -%}
 
         {%- if section.settings.copy != blank -%}
@@ -80,7 +79,7 @@
       "type": "richtext",
       "id": "copy",
       "label": "Copy",
-      "default": "<p>Spotlight one hero style with editorial imagery, refined copy, and a clear path into the rental flow.</p>"
+      "default": "<p>Statement silhouettes, refined details, and occasion-ready styling for the moments that deserve something memorable.</p>"
     },
     {
       "type": "text",
