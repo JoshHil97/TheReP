@@ -84,12 +84,12 @@
 <section class="rp-product-main rp-tone--{{ section.settings.tone }}">
   <div class="rp-shell rp-shell--wide">
     <nav class="rp-breadcrumbs" aria-label="Breadcrumb" data-rp-reveal>
-      <a href="/">Home</a>
+      <a href="{{ routes.root_url }}">Home</a>
       <span>/</span>
       {%- if primary_collection != blank -%}
         <a href="{{ primary_collection.url }}">{{ primary_collection.title }}</a>
       {%- else -%}
-        <a href="/collections/all">The Collection</a>
+        <a href="{{ routes.all_products_collection_url }}">The Collection</a>
       {%- endif -%}
       <span>/</span>
       <span aria-current="page">{{ product.title }}</span>

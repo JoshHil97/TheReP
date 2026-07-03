@@ -26,7 +26,7 @@
   >
     <div class="rp-shell rp-shell--wide">
       <nav class="rp-breadcrumbs" aria-label="Breadcrumb" data-rp-reveal>
-        <a href="/">Home</a>
+        <a href="{{ routes.root_url }}">Home</a>
         <span>/</span>
         <span aria-current="page">{% if collection.title == blank or collection.title == "Products" or collection.title == "All" %}The Collection{% else %}{{ collection.title }}{% endif %}</span>
       </nav>

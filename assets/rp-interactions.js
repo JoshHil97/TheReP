@@ -890,7 +890,7 @@ const initCartDrawer = () => {
       content.innerHTML = `
         <div class="rp-cart-drawer__empty">
           <p>Your cart is still empty.</p>
-          <a class="rp-button rp-button--solid" href="/collections/all">Browse dresses</a>
+          <a class="rp-button rp-button--solid" href="${shopifyRoot}collections/all">Browse dresses</a>
         </div>
       `;
       return;

@@ -45,7 +45,7 @@
             {{ section.settings.cta_label | default: 'Rent now' }}
           </a>
         {%- else -%}
-          <a class="rp-button rp-button--solid" href="/collections/all">
+          <a class="rp-button rp-button--solid" href="{{ routes.all_products_collection_url }}">
             {{ section.settings.cta_label | default: 'Rent now' }}
           </a>
         {%- endif -%}

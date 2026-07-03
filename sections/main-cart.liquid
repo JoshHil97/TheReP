@@ -1,7 +1,7 @@
 <section class="rp-cart">
   <div class="rp-shell rp-shell--wide">
     <nav class="rp-breadcrumbs" aria-label="Breadcrumb" data-rp-reveal>
-      <a href="/">Home</a>
+      <a href="{{ routes.root_url }}">Home</a>
       <span>/</span>
       <span aria-current="page">Cart</span>
     </nav>
@@ -191,7 +191,7 @@
               <button class="rp-button rp-button--ghost" type="submit" name="update">
                 Update cart
               </button>
-              <a class="rp-text-link" href="/collections/all">Continue shopping</a>
+              <a class="rp-text-link" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
             </div>
           </div>
 
@@ -259,8 +259,8 @@
             <p>Start in the edit, add the styles you want to rent, and your bag will appear here with all of the booking details attached.</p>
           </div>
           <div class="rp-cart__empty-actions">
-            <a class="rp-button rp-button--solid" href="/collections/all">Browse dresses</a>
-            <a class="rp-button rp-button--ghost" href="/">Back home</a>
+            <a class="rp-button rp-button--solid" href="{{ routes.all_products_collection_url }}">Browse dresses</a>
+            <a class="rp-button rp-button--ghost" href="{{ routes.root_url }}">Back home</a>
           </div>
         </div>
       </div>

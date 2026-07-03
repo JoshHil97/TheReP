@@ -37,7 +37,7 @@
           Curated occasionwear, tracked delivery, prepaid returns, and a booking journey that feels polished from first click to send-back.
         </p>
         <div class="rp-footer__lead-actions">
-          <a class="rp-button rp-button--solid" href="/collections/all">Browse dresses</a>
+          <a class="rp-button rp-button--solid" href="{{ routes.all_products_collection_url }}">Browse dresses</a>
           {%- if section.settings.instagram_url != blank -%}
             <a class="rp-text-link" href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">Follow on Instagram</a>
           {%- endif -%}
@@ -45,7 +45,7 @@
             <a class="rp-text-link" href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener">Follow on TikTok</a>
           {%- endif -%}
           {%- if section.settings.instagram_url == blank and section.settings.tiktok_url == blank -%}
-            <a class="rp-text-link" href="/">Back home</a>
+            <a class="rp-text-link" href="{{ routes.root_url }}">Back home</a>
           {%- endif -%}
         </div>
       </div>
@@ -53,7 +53,7 @@
 
     <div class="rp-footer__top">
       <div class="rp-footer__brand" data-rp-reveal>
-        <a class="rp-footer__brand-link" href="/">
+        <a class="rp-footer__brand-link" href="{{ routes.root_url }}">
           {%- if section.settings.logo != blank -%}
             {{
               section.settings.logo
