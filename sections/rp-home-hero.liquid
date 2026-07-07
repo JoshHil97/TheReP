@@ -48,7 +48,7 @@
               loading: 'eager',
               fetchpriority: 'high',
               widths: '900, 1200, 1600, 2200',
-              alt: section.settings.video_heading | default: section.settings.heading
+              alt: section.settings.heading
           }}
         {%- elsif section.settings.desktop_image != blank or section.settings.mobile_image != blank -%}
           {{
@@ -60,27 +60,13 @@
               loading: 'eager',
               fetchpriority: 'high',
               widths: '900, 1200, 1600, 2200',
-              alt: section.settings.video_heading | default: section.settings.heading
+              alt: section.settings.heading
           }}
         {%- else -%}
           <img class="rp-home-hero__film-image rp-home-hero__film-image--fallback" src="{{ 'rp-model-midnight.jpg' | asset_url }}" alt="Campaign film placeholder for The Re:P Club" width="1600" height="1000" loading="eager" fetchpriority="high">
         {%- endif -%}
       </div>
 
-      <div class="rp-home-hero__film-overlay">
-        <div class="rp-home-hero__film-copy">
-          {%- if section.settings.video_label != blank -%}
-            <p class="rp-home-hero__film-label">{{ section.settings.video_label }}</p>
-          {%- endif -%}
-          {%- if section.settings.video_heading != blank -%}
-            <h2 class="rp-home-hero__film-heading">{{ section.settings.video_heading }}</h2>
-          {%- endif -%}
-        </div>
-
-        {%- if section.settings.video_copy != blank -%}
-          <div class="rp-home-hero__film-note rte">{{ section.settings.video_copy }}</div>
-        {%- endif -%}
-      </div>
     </div>
 
     <div class="rp-home-hero__layout">
@@ -237,24 +223,6 @@
       "type": "image_picker",
       "id": "campaign_poster",
       "label": "Campaign poster"
-    },
-    {
-      "type": "text",
-      "id": "video_label",
-      "label": "Video label",
-      "default": "Campaign film"
-    },
-    {
-      "type": "text",
-      "id": "video_heading",
-      "label": "Video heading",
-      "default": "Leave space for motion at the top of the page."
-    },
-    {
-      "type": "richtext",
-      "id": "video_copy",
-      "label": "Video copy",
-      "default": "<p>Upload a short runway or fit clip here so the homepage feels alive, while the collection and product pages stay calmer and easier to scan.</p>"
     },
     {
       "type": "text",
