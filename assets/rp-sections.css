@@ -1,29 +1,60 @@
 .rp-announcement-bar {
   position: relative;
   z-index: 30;
-  background: rgba(33, 28, 24, 0.92);
-  color: rgba(255, 255, 255, 0.82);
-  min-height: 2.4rem;
+  overflow: hidden;
+  background: rgba(24, 18, 15, 0.96);
+  color: rgba(255, 250, 244, 0.82);
+  min-height: 2.5rem;
 }
 
 .rp-announcement-bar__track {
   position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 2.4rem;
-  font-size: 0.77rem;
-  letter-spacing: 0.08em;
+  display: block;
+  overflow: hidden;
+  min-height: 2.5rem;
+  font-size: 0.73rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-.rp-announcement-bar__item {
-  grid-area: 1 / 1;
-  opacity: 0;
-  transition: opacity var(--rp-transition);
+.rp-announcement-bar__marquee {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  min-width: 100%;
+  min-height: 2.5rem;
+  animation: rp-marquee var(--rp-marquee-duration, 30s) linear infinite;
 }
 
-.rp-announcement-bar__item.is-active {
-  opacity: 1;
+.rp-announcement-bar__item {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2.25rem;
+  padding-right: 2.25rem;
+  white-space: nowrap;
+}
+
+.rp-announcement-bar__item::after {
+  content: "•";
+  opacity: 0.45;
+}
+
+@keyframes rp-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 749px) {
+  .rp-announcement-bar__track {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
 }
 
 /* Pause marquee animation on hover and for reduced-motion users */

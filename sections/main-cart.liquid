@@ -157,21 +157,17 @@
                   {%- endif -%}
 
                   <div class="rp-cart__item-actions">
-                    <label class="rp-cart__quantity" for="CartUpdates-{{ item.key }}">
-                      <span>Units</span>
-                      <input
-                        id="CartUpdates-{{ item.key }}"
-                        class="rp-cart__quantity-input"
-                        type="number"
-                        name="updates[]"
-                        value="{{ item.quantity }}"
-                        min="0"
-                        inputmode="numeric"
-                        aria-label="Units for {{ item.product.title }}"
-                        data-rp-cart-qty
-                        data-line-key="{{ item.key }}"
-                      >
-                    </label>
+                    {%- comment -%}
+                      Rentals are always a single unit, so the quantity control is not
+                      shown. The hidden field keeps the cart form's updates[] mapping
+                      intact for non-JS submits without letting quantity change.
+                    {%- endcomment -%}
+                    <input
+                      id="CartUpdates-{{ item.key }}"
+                      type="hidden"
+                      name="updates[]"
+                      value="{{ item.quantity }}"
+                    >
 
                     <button
                       type="button"
@@ -188,9 +184,6 @@
             {%- endfor -%}
 
             <div class="rp-cart__footer-actions" data-rp-reveal>
-              <button class="rp-button rp-button--ghost" type="submit" name="update">
-                Update cart
-              </button>
               <a class="rp-text-link" href="/collections/all">Continue shopping</a>
             </div>
           </div>

@@ -926,7 +926,7 @@ body.rp-filters-open::before {
   }
 
   .rp-announcement-bar__track {
-    font-size: 0.67rem;
+    font-size: 0.68rem;
     letter-spacing: 0.1em;
   }
 
@@ -1046,7 +1046,6 @@ body.rp-filters-open::before {
   display: flex;
   width: max-content;
   align-items: center;
-  gap: 2.25rem;
   min-width: 100%;
   animation: rp-marquee var(--rp-marquee-duration, 30s) linear infinite;
 }
@@ -1057,16 +1056,13 @@ body.rp-filters-open::before {
   display: inline-flex;
   align-items: center;
   gap: 2.25rem;
+  padding-right: 2.25rem;
   white-space: nowrap;
 }
 
 .rp-announcement-bar__item::after {
   content: "•";
   opacity: 0.45;
-}
-
-.rp-announcement-bar__item:last-child::after {
-  content: "";
 }
 
 .rp-featured-dress__content .rp-button {
@@ -1495,18 +1491,7 @@ textarea:focus-visible {
   border-radius: 2.5rem;
   overflow: hidden;
   background: linear-gradient(135deg, #dbe3cc 0%, #eef3e5 52%, #fafbf7 100%);
-  border: 1px solid var(--rp-color-olive-border);
   box-shadow: var(--rp-shadow-panel);
-}
-
-.rp-home-hero__film::before {
-  content: "";
-  position: absolute;
-  inset: 1rem;
-  border-radius: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  pointer-events: none;
-  z-index: 1;
 }
 
 .rp-home-hero__film-media,
@@ -2480,7 +2465,7 @@ textarea:focus-visible {
   }
 
   .rp-announcement-bar__track {
-    font-size: 0.67rem;
+    font-size: 0.68rem;
     letter-spacing: 0.1em;
   }
 
@@ -2501,11 +2486,6 @@ textarea:focus-visible {
   .rp-home-hero__film {
     min-height: 16.5rem;
     border-radius: 1.85rem;
-  }
-
-  .rp-home-hero__film::before {
-    inset: 0.75rem;
-    border-radius: 1.35rem;
   }
 
   .rp-home-hero__film-overlay {

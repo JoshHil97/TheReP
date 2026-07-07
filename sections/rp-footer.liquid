@@ -83,6 +83,18 @@
       <div class="rp-footer__columns">
         {%- if section.blocks.size > 0 -%}
           {%- for block in section.blocks -%}
+            {%- liquid
+              comment
+                Skip link-list columns with no menu assigned (or an empty menu) so the
+                footer never shows a dead heading with nothing to click underneath.
+              endcomment
+              if block.type == 'link_list'
+                assign footer_menu_links = linklists[block.settings.menu].links
+                if block.settings.menu == blank or footer_menu_links.size == 0
+                  continue
+                endif
+              endif
+            -%}
             <div class="rp-footer__column" data-rp-reveal {{ block.shopify_attributes }}>
               {%- if block.settings.heading != blank -%}
                 {%- liquid

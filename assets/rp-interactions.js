@@ -918,10 +918,6 @@ const initCartDrawer = () => {
                   ${variantTitle}
                   ${renderProperties(item.properties)}
                   <div class="rp-cart-drawer__item-actions">
-                    <label class="rp-cart-drawer__quantity">
-                      <span class="visually-hidden">Units for ${escapeHtml(title)}</span>
-                      <input type="number" min="0" value="${Number(item.quantity) || 0}" data-rp-cart-line-key="${escapeHtml(item.key)}" data-rp-cart-quantity>
-                    </label>
                     <button type="button" class="rp-cart-drawer__remove" data-rp-cart-remove data-rp-cart-line-key="${escapeHtml(item.key)}">Remove</button>
                   </div>
                 </div>
