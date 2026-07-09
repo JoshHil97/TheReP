@@ -36,8 +36,42 @@
         <p>
           Curated occasionwear, tracked delivery, prepaid returns, and a booking journey that feels polished from first click to send-back.
         </p>
+
+        {%- if section.settings.show_newsletter -%}
+          <div class="rp-footer__newsletter">
+            {%- if section.settings.newsletter_heading != blank -%}
+              <p class="rp-footer__newsletter-heading">{{ section.settings.newsletter_heading }}</p>
+            {%- endif -%}
+            {%- if section.settings.newsletter_copy != blank -%}
+              <p class="rp-footer__newsletter-copy">{{ section.settings.newsletter_copy }}</p>
+            {%- endif -%}
+
+            {%- form 'customer', class: 'rp-footer__newsletter-form' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter, footer-signup">
+              {%- if form.posted_successfully? -%}
+                <p class="rp-footer__newsletter-note rp-footer__newsletter-note--success">Thank you — you’re on the list.</p>
+              {%- elsif form.errors -%}
+                <p class="rp-footer__newsletter-note rp-footer__newsletter-note--error">{{ form.errors | default_errors }}</p>
+              {%- endif -%}
+              <label class="visually-hidden" for="FooterNewsletterEmail">Email address</label>
+              <div class="rp-footer__newsletter-row">
+                <input
+                  id="FooterNewsletterEmail"
+                  class="rp-footer__newsletter-input"
+                  type="email"
+                  name="contact[email]"
+                  placeholder="{{ section.settings.newsletter_placeholder | default: 'Email address' }}"
+                  autocomplete="email"
+                  required
+                >
+                <button class="rp-button rp-button--solid" type="submit">{{ section.settings.newsletter_button | default: 'Sign up' }}</button>
+              </div>
+            {%- endform -%}
+          </div>
+        {%- endif -%}
+
         <div class="rp-footer__lead-actions">
-          <a class="rp-button rp-button--solid" href="/collections/all">Browse dresses</a>
+          <a class="rp-button rp-button--ghost" href="/collections/all">Browse dresses</a>
           {%- if section.settings.instagram_url != blank -%}
             <a class="rp-text-link" href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">Follow on Instagram</a>
           {%- endif -%}
@@ -85,50 +119,74 @@
           {%- for block in section.blocks -%}
             {%- liquid
               comment
-                Skip link-list columns with no menu assigned (or an empty menu) so the
-                footer never shows a dead heading with nothing to click underneath.
+                A link-list column with no menu (or an empty menu) would otherwise
+                render a dead heading with nothing to click. Instead of hiding it,
+                fall back to a sensible set of real, working links based on the
+                column heading, so the footer stays full and nothing is a dead end.
               endcomment
+              assign footer_fallback = ''
               if block.type == 'link_list'
                 assign footer_menu_links = linklists[block.settings.menu].links
                 if block.settings.menu == blank or footer_menu_links.size == 0
-                  continue
+                  assign heading_key = block.settings.heading | downcase
+                  if heading_key contains 'care' or heading_key contains 'help' or heading_key contains 'support' or heading_key contains 'customer'
+                    assign footer_fallback = 'care'
+                  elsif heading_key contains 'shop' or heading_key contains 'edit' or heading_key contains 'collection' or heading_key contains 'browse'
+                    assign footer_fallback = 'shop'
+                  else
+                    assign footer_fallback = 'skip'
+                  endif
                 endif
               endif
             -%}
-            <div class="rp-footer__column" data-rp-reveal {{ block.shopify_attributes }}>
-              {%- if block.settings.heading != blank -%}
-                {%- liquid
-                  assign block_heading = block.settings.heading | downcase
-                  assign block_heading_url = blank
+            {%- unless footer_fallback == 'skip' -%}
+              <div class="rp-footer__column" data-rp-reveal {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  {%- liquid
+                    assign block_heading = block.settings.heading | downcase
+                    assign block_heading_url = blank
 
-                  if block_heading == 'about' or block_heading == 'about us'
-                    assign block_heading_url = about_page_url
-                  elsif block_heading == 'faqs' or block_heading == 'faq'
-                    assign block_heading_url = faq_page_url
-                  elsif block_heading contains 'terms'
-                    assign block_heading_url = terms_page_url
-                  endif
-                -%}
-                <h2 class="rp-footer__heading">
-                  {%- if block_heading_url != blank -%}
-                    <a href="{{ block_heading_url }}">{{ block.settings.heading }}</a>
-                  {%- else -%}
-                    {{ block.settings.heading }}
-                  {%- endif -%}
-                </h2>
-              {%- endif -%}
+                    if block_heading == 'about' or block_heading == 'about us'
+                      assign block_heading_url = about_page_url
+                    elsif block_heading == 'faqs' or block_heading == 'faq'
+                      assign block_heading_url = faq_page_url
+                    elsif block_heading contains 'terms'
+                      assign block_heading_url = terms_page_url
+                    endif
+                  -%}
+                  <h2 class="rp-footer__heading">
+                    {%- if block_heading_url != blank -%}
+                      <a href="{{ block_heading_url }}">{{ block.settings.heading }}</a>
+                    {%- else -%}
+                      {{ block.settings.heading }}
+                    {%- endif -%}
+                  </h2>
+                {%- endif -%}
 
-              {%- if block.type == 'link_list' and block.settings.menu != blank -%}
-                <ul class="rp-footer__links" role="list">
-                  {%- for link in linklists[block.settings.menu].links -%}
-                    {%- capture resolved_url -%}{% render 'rp-nav-link-url', link_title: link.title, link_url: link.url %}{%- endcapture -%}
-                    <li><a href="{{ resolved_url | strip }}">{{ link.title }}</a></li>
-                  {%- endfor -%}
-                </ul>
-              {%- elsif block.type == 'text' -%}
-                <div class="rp-footer__text rte">{{ block.settings.copy }}</div>
-              {%- endif -%}
-            </div>
+                {%- if block.type == 'link_list' and block.settings.menu != blank and footer_menu_links.size > 0 -%}
+                  <ul class="rp-footer__links" role="list">
+                    {%- for link in linklists[block.settings.menu].links -%}
+                      {%- capture resolved_url -%}{% render 'rp-nav-link-url', link_title: link.title, link_url: link.url %}{%- endcapture -%}
+                      <li><a href="{{ resolved_url | strip }}">{{ link.title }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                {%- elsif footer_fallback == 'care' -%}
+                  <ul class="rp-footer__links" role="list">
+                    <li><a href="{{ how_it_works_url }}">How it works</a></li>
+                    <li><a href="{{ returns_page_url }}">Delivery &amp; returns</a></li>
+                    <li><a href="{{ faq_page_url }}">FAQs</a></li>
+                    <li><a href="{{ sizing_page_url }}">Sizing</a></li>
+                  </ul>
+                {%- elsif footer_fallback == 'shop' -%}
+                  <ul class="rp-footer__links" role="list">
+                    <li><a href="/collections/all">All dresses</a></li>
+                    <li><a href="{{ how_it_works_url }}">How it works</a></li>
+                  </ul>
+                {%- elsif block.type == 'text' -%}
+                  <div class="rp-footer__text rte">{{ block.settings.copy }}</div>
+                {%- endif -%}
+              </div>
+            {%- endunless -%}
           {%- endfor -%}
         {%- else -%}
           <div class="rp-footer__column" data-rp-reveal>
@@ -211,6 +269,40 @@
       "type": "url",
       "id": "returns_page_url",
       "label": "Returns page URL"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter signup"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter signup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Join the list"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_copy",
+      "label": "Newsletter copy",
+      "default": "Be first to hear about new arrivals and restocks."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Email field placeholder",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "Button label",
+      "default": "Sign up"
     }
   ],
   "blocks": [

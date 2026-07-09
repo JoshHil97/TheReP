@@ -528,6 +528,59 @@
   color: #7c2d12;
 }
 
+.rp-password__signup {
+  margin-top: 1.5rem;
+}
+
+.rp-password__signup-heading {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(33, 24, 20, 0.56);
+  margin: 0 0 0.4rem;
+}
+
+.rp-password__signup-copy {
+  margin: 0 0 1rem;
+  color: rgba(33, 24, 20, 0.72);
+}
+
+.rp-password__signup-note {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+}
+
+.rp-password__signup-note--success {
+  color: #3f6212;
+}
+
+.rp-password__signup-note--error {
+  color: #7c2d12;
+}
+
+.rp-password__owner {
+  margin-top: 1.5rem;
+}
+
+.rp-password__owner > summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: rgba(33, 24, 20, 0.6);
+  list-style: none;
+}
+
+.rp-password__owner > summary::-webkit-details-marker {
+  display: none;
+}
+
+.rp-password__owner > summary:hover {
+  color: var(--rp-color-charcoal);
+}
+
+.rp-password__owner .rp-password__form {
+  margin-top: 1rem;
+}
+
 .rp-password__meta {
   display: flex;
   justify-content: center;
@@ -573,6 +626,52 @@
 
 .rp-footer__links li + li {
   margin-top: 0.65rem;
+}
+
+.rp-footer__newsletter {
+  margin-top: 1.5rem;
+  max-width: 30rem;
+}
+
+.rp-footer__newsletter-heading {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(33, 28, 24, 0.55);
+  margin: 0 0 0.35rem;
+}
+
+.rp-footer__newsletter-copy {
+  margin: 0 0 0.85rem;
+  color: rgba(33, 28, 24, 0.72);
+}
+
+.rp-footer__newsletter-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.6rem;
+}
+
+.rp-footer__newsletter-input {
+  width: 100%;
+  border: 1px solid var(--rp-color-border, rgba(33, 28, 24, 0.14));
+  border-radius: 999px;
+  background: rgba(248, 250, 245, 0.92);
+  color: var(--rp-color-charcoal, #211814);
+  padding: 0.85rem 1rem;
+}
+
+.rp-footer__newsletter-note {
+  margin: 0 0 0.65rem;
+  font-size: 0.9rem;
+}
+
+.rp-footer__newsletter-note--success {
+  color: #3f6212;
+}
+
+.rp-footer__newsletter-note--error {
+  color: #7c2d12;
 }
 
 .rp-footer__bottom {
@@ -658,7 +757,8 @@
     align-items: start;
   }
 
-  .rp-password__input-row {
+  .rp-password__input-row,
+  .rp-footer__newsletter-row {
     grid-template-columns: minmax(0, 1fr);
   }
 }
